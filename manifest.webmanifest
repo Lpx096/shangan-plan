@@ -1,0 +1,42 @@
+{
+ "name": "上岸计划",
+ "short_name": "上岸计划",
+ "description": "李芃羲 84天 AI 转型学习打卡",
+ "start_url": "./index.html#today",
+ "scope": "./",
+ "display": "standalone",
+ "orientation": "portrait",
+ "background_color": "#F5F5F7",
+ "theme_color": "#5E5CE6",
+ "lang": "zh-CN",
+ "icons": [
+  {
+   "src": "icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ],
+ "shortcuts": [
+  {
+   "name": "今日打卡",
+   "url": "./index.html#today"
+  },
+  {
+   "name": "进度",
+   "url": "./index.html#progress"
+  }
+ ]
+}

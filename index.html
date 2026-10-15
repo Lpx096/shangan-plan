@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="auto"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>上岸计划</title>
+<meta name="description" content="李芃羲 84天 AI 转型学习打卡">
+<meta name="theme-color" content="#F5F5F7" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0B0B0F" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="上岸计划">
+<style>
+:root{--bg:#F5F5F7;--sf:#FFFFFF;--sf2:#F2F2F5;--line:rgba(0,0,0,.07);--tx:#1D1D1F;--tx2:#6E6E73;--tx3:#A1A1A6;
+--ac:#5E5CE6;--acs:rgba(94,92,230,.10);--act:#FFFFFF;--dg:#E5484D;--dgs:rgba(229,72,77,.08);--wn:#C2410C;--wns:rgba(234,88,12,.08);
+--sh:0 1px 2px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.04);--sh2:0 8px 32px rgba(0,0,0,.12);
+--f:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","HarmonyOS Sans SC","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+--mono:"SF Mono",ui-monospace,Menlo,Consolas,monospace;--r:20px;--r2:12px;--ease:cubic-bezier(.25,.8,.25,1)}
+@media(prefers-color-scheme:dark){[data-theme=auto]{--bg:#0B0B0F;--sf:#16161B;--sf2:#1F1F25;--line:rgba(255,255,255,.07);--tx:#F5F5F7;--tx2:#9A9AA2;--tx3:#5E5E67;--ac:#8583FF;--acs:rgba(133,131,255,.14);--dg:#FF6369;--dgs:rgba(255,99,105,.10);--wn:#FB923C;--wns:rgba(251,146,60,.10);--sh:0 0 0 1px rgba(255,255,255,.05);--sh2:0 8px 32px rgba(0,0,0,.5)}}
+[data-theme=dark]{--bg:#0B0B0F;--sf:#16161B;--sf2:#1F1F25;--line:rgba(255,255,255,.07);--tx:#F5F5F7;--tx2:#9A9AA2;--tx3:#5E5E67;--ac:#8583FF;--acs:rgba(133,131,255,.14);--dg:#FF6369;--dgs:rgba(255,99,105,.10);--wn:#FB923C;--wns:rgba(251,146,60,.10);--sh:0 0 0 1px rgba(255,255,255,.05);--sh2:0 8px 32px rgba(0,0,0,.5)}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg)}body{font-family:var(--f);font-size:15px;line-height:1.6;color:var(--tx);background:var(--bg);-webkit-font-smoothing:antialiased;min-height:100vh}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}a{color:inherit;text-decoration:none}
+svg.i{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+svg.s{width:16px;height:16px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px calc(104px + env(safe-area-inset-bottom))}
+@media(min-width:900px){.wrap{padding:0 32px 64px}}
+/* top bar */
+.top{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 80%,transparent);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid transparent;transition:border-color .2s}
+.top.sc{border-color:var(--line)}
+.topin{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:16px;height:56px;padding:env(safe-area-inset-top) 16px 0;box-sizing:content-box}
+@media(min-width:900px){.topin{padding:0 32px}}
+.logo{display:flex;align-items:center;gap:8px;font-weight:600;font-size:15px}.logo i{width:24px;height:24px;border-radius:7px;background:var(--ac);display:grid;place-items:center;color:#fff}.logo i svg{width:14px;height:14px;stroke-width:2.4}
+.tabs{display:none;gap:2px;margin-left:16px}.tabs a{padding:6px 12px;border-radius:8px;font-size:14px;color:var(--tx2);font-weight:500;transition:.15s}.tabs a:hover{color:var(--tx)}.tabs a.on{color:var(--tx);background:var(--sf2)}
+.tright{margin-left:auto;display:flex;align-items:center;gap:8px}.clk{font-size:13px;color:var(--tx2);font-variant-numeric:tabular-nums}
+.ib{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;color:var(--tx2);transition:.15s}.ib:hover{background:var(--sf2);color:var(--tx)}
+@media(min-width:900px){.tabs{display:flex}}
+.bnav{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;padding:8px 8px calc(8px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--sf) 86%,transparent);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-top:1px solid var(--line)}
+.bnav a{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10.5px;color:var(--tx3);font-weight:500;padding:4px 0;transition:color .15s}.bnav a.on{color:var(--ac)}.bnav svg.i{width:22px;height:22px}
+@media(min-width:900px){.bnav{display:none}}
+/* type */
+.ph{padding:24px 0 16px}.ph .cap{font-size:13px;color:var(--tx2);font-weight:500}.ph h1{font-size:32px;line-height:1.2;font-weight:700;letter-spacing:-.01em;margin-top:2px}
+.ph p{color:var(--tx2);font-size:15px;margin-top:4px}
+h2.sec{font-size:13px;font-weight:600;color:var(--tx2);margin:32px 4px 8px;display:flex;align-items:center}h2.sec span{margin-left:auto;font-weight:400;color:var(--tx3);font-size:12px}
+.mono{font-family:var(--mono)}.t2{color:var(--tx2)}.t3{color:var(--tx3)}.sm{font-size:13px}.xs{font-size:12px}
+.page{animation:in .35s var(--ease)}@keyframes in{from{opacity:0;transform:translateY(6px)}}
+/* layout */
+.cols{display:grid;gap:16px}@media(min-width:900px){.cols{grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);align-items:start}.cols>.side{position:sticky;top:72px}}
+.stack{display:flex;flex-direction:column;gap:16px}
+.g2{display:grid;gap:16px}@media(min-width:900px){.g2{grid-template-columns:1fr 1fr}}
+/* card */
+.card{background:var(--sf);border-radius:var(--r);box-shadow:var(--sh);padding:20px}
+.card.p0{padding:0}.ch{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600;margin-bottom:12px}.ch .rt{margin-left:auto;font-size:13px;font-weight:400;color:var(--tx3)}
+.row{display:flex;align-items:center;gap:12px;padding:12px 20px;border-top:1px solid var(--line)}.row:first-child{border-top:0}
+.rows>.row:first-child{border-top:0}
+/* hero */
+.hero{display:flex;align-items:center;gap:24px}
+.ring{position:relative;width:132px;height:132px;flex:none}.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .bgc{stroke:var(--sf2)}.ring .fgc{stroke:var(--ac);transition:stroke-dashoffset 1.2s var(--ease)}
+.ring .c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}.ring .c b{font-size:34px;font-weight:700;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}.ring .c span{font-size:12px;color:var(--tx2);margin-top:4px}
+.hinfo{min-width:0;flex:1}.hinfo .k{font-size:13px;color:var(--tx2)}.hinfo .big{font-size:28px;font-weight:700;letter-spacing:-.01em;line-height:1.25;margin:2px 0 8px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;padding:4px 10px;border-radius:99px;background:var(--acs);color:var(--ac)}
+.chip.w{background:var(--wns);color:var(--wn)}.chip.d{background:var(--dgs);color:var(--dg)}.chip.n{background:var(--sf2);color:var(--tx2)}
+.mstats{display:grid;grid-template-columns:repeat(3,1fr);margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
+.mstats div{padding:0 4px}.mstats div+div{border-left:1px solid var(--line);padding-left:16px}.mstats b{display:block;font-size:20px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.01em}.mstats span{font-size:12px;color:var(--tx2)}
+@media(max-width:420px){.hero{gap:16px}.ring{width:112px;height:112px}.ring .c b{font-size:28px}.hinfo .big{font-size:22px}}
+/* notice */
+.notice{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:16px;background:var(--sf);box-shadow:var(--sh);font-size:14px}
+.notice .ic{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;flex:none;background:var(--wns);color:var(--wn)}.notice.d .ic{background:var(--dgs);color:var(--dg)}
+.notice b{display:block;font-weight:600;font-size:14px}.notice p{color:var(--tx2);font-size:13px;line-height:1.55;margin-top:2px}
+.notice .x{margin-left:auto;font-size:13px;color:var(--ac);font-weight:500;white-space:nowrap;padding:4px 0}
+/* task */
+.task+.task{margin-top:24px;padding-top:24px;border-top:1px solid var(--line)}
+.tl1{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--tx2);font-weight:500}.tl1 .n{color:var(--ac);font-weight:600}
+.tt{font-size:20px;font-weight:600;line-height:1.35;margin:4px 0 12px;letter-spacing:-.005em}
+.dl{display:grid;grid-template-columns:72px 1fr;gap:10px 12px;font-size:14px}.dl dt{color:var(--tx3);font-size:13px;padding-top:1px}.dl dd{color:var(--tx);line-height:1.6}
+.dl dd.code{font-family:var(--mono);font-size:12.5px;color:var(--tx2);word-break:break-all}
+.acc{margin-top:16px;display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:var(--r2);background:var(--acs);font-size:14px}.acc svg{color:var(--ac);margin-top:2px}.acc b{font-weight:600;color:var(--ac);margin-right:4px}
+.gate{margin-top:8px;display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:var(--r2);background:var(--dgs);color:var(--dg);font-size:14px;font-weight:500}
+/* buttons */
+.cta{width:100%;height:56px;border-radius:16px;background:var(--ac);color:#fff;font-size:17px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:24px;transition:transform .15s var(--ease),filter .15s;box-shadow:0 4px 14px color-mix(in srgb,var(--ac) 30%,transparent)}
+.cta:hover{filter:brightness(1.06)}.cta:active{transform:scale(.98)}.cta svg{stroke-width:2.4}
+.hint{text-align:center;font-size:12px;color:var(--tx3);margin-top:8px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:44px;border-radius:12px;background:var(--sf2);font-size:15px;font-weight:500;transition:.15s}.btn:hover{filter:brightness(.97)}
+.btn.pri{background:var(--ac);color:#fff}.btn.dg{color:var(--dg)}.btn+.btn{margin-top:8px}
+/* habits */
+.hab{display:flex;align-items:center;gap:12px;padding:12px 20px;border-top:1px solid var(--line);cursor:pointer;user-select:none}.hab:first-child{border-top:0}
+.hab input{display:none}.cb{width:24px;height:24px;border-radius:50%;border:1.8px solid var(--tx3);display:grid;place-items:center;flex:none;transition:.2s var(--ease)}
+.cb svg{width:14px;height:14px;stroke:#fff;stroke-width:3;opacity:0;transform:scale(.5);transition:.2s var(--ease)}
+.hab input:checked+.cb,.tli.ok .cb{background:var(--ac);border-color:var(--ac)}.hab input:checked+.cb svg,.tli.ok .cb svg{opacity:1;transform:none}
+.hab .ht{font-size:15px;font-weight:500}.hab .hs{font-size:12px;color:var(--tx2);line-height:1.45}.hab input:checked~div .ht{color:var(--tx3);text-decoration:line-through}
+.hbar{display:flex;align-items:center;gap:12px;padding:12px 20px;border-top:1px solid var(--line);font-size:13px;color:var(--tx2)}
+.lin{height:6px;flex:1;background:var(--sf2);border-radius:99px;overflow:hidden}.lin i{display:block;height:100%;width:0;background:var(--ac);border-radius:99px;transition:width .9s var(--ease)}
+/* countdown */
+.cdl .row{padding:12px 20px}.cdn{width:56px;text-align:right;font-size:20px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.01em;flex:none}.cdn small{font-size:12px;color:var(--tx3);font-weight:400;margin-left:2px}
+.cdn.hot{color:var(--dg)}.cdn.soon{color:var(--wn)}.cdl .past{opacity:.45}.cdt{min-width:0;flex:1}.cdt b{display:block;font-weight:500;font-size:14px}.cdt span{font-size:12px;color:var(--tx2)}
+/* details */
+details.card{padding:0}details summary{list-style:none;display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;font-weight:600;font-size:15px}details summary::-webkit-details-marker{display:none}
+details summary .chev{margin-left:auto;color:var(--tx3);transition:transform .2s var(--ease)}details[open] summary .chev{transform:rotate(90deg)}
+details .db{padding:0 20px 20px}details summary .sic{width:30px;height:30px;border-radius:9px;background:var(--sf2);display:grid;place-items:center;color:var(--tx2)}
+.road{list-style:none}.road li{display:flex;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line);font-size:14px}.road li:first-child{border-top:0}
+.road .d{width:72px;flex:none;font-size:12px;color:var(--tx3);font-variant-numeric:tabular-nums}.road .p{margin-left:auto;font-size:12px;color:var(--tx3);font-variant-numeric:tabular-nums}.road li.now .t{color:var(--ac);font-weight:600}.road li.past .t{color:var(--tx3)}
+.li{padding:10px 0;border-top:1px solid var(--line);font-size:14px}.li:first-child{border-top:0}.lab{font-size:11px;font-weight:600;color:var(--tx2);background:var(--sf2);padding:2px 8px;border-radius:6px;margin-right:8px}
+textarea,input[type=search]{width:100%;font:inherit;font-size:15px;color:var(--tx);background:var(--sf2);border:1px solid transparent;border-radius:12px;padding:12px 14px;outline:none;transition:.15s}
+textarea:focus,input[type=search]:focus{border-color:var(--ac);background:var(--sf)}textarea{min-height:96px;resize:vertical;line-height:1.6}
+.ol{list-style:none;counter-reset:n}.ol li{counter-increment:n;display:flex;gap:12px;padding:12px 0;border-top:1px solid var(--line);font-size:15px}.ol li:first-child{border-top:0}
+.ol li::before{content:counter(n);width:24px;height:24px;flex:none;border-radius:50%;background:var(--acs);color:var(--ac);font-size:12px;font-weight:600;display:grid;place-items:center;margin-top:1px}
+.links .row{padding:14px 20px;font-size:15px;transition:background .15s}.links .row:hover{background:var(--sf2)}.links .row .chev{margin-left:auto;color:var(--tx3)}.links .ico{color:var(--ac)}
+/* progress page */
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}@media(min-width:900px){.stats{grid-template-columns:repeat(4,1fr)}}
+.stat{background:var(--sf);border-radius:var(--r);box-shadow:var(--sh);padding:16px 20px}.stat span{font-size:13px;color:var(--tx2)}.stat b{display:block;font-size:28px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin-top:4px;line-height:1.2}.stat b small{font-size:14px;color:var(--tx3);font-weight:500;margin-left:2px}
+.heat{display:grid;grid-template-columns:repeat(12,1fr);gap:6px}
+.heat i{aspect-ratio:1;border-radius:7px;background:var(--sf2);font-style:normal;font-size:10px;color:var(--tx3);display:grid;place-items:center;cursor:pointer;transition:transform .15s var(--ease);font-variant-numeric:tabular-nums}
+.heat i:hover{transform:scale(1.1)}.heat i.d{background:var(--ac);color:#fff}.heat i.t{box-shadow:inset 0 0 0 2px var(--ac);color:var(--ac);font-weight:600}.heat i.g:not(.d){box-shadow:inset 0 0 0 2px var(--dg);color:var(--dg)}
+.lg{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--tx2);margin-top:16px}.lg span{display:flex;align-items:center;gap:6px}.lg i{width:10px;height:10px;border-radius:3px;background:var(--sf2)}
+.sb{padding:12px 0;border-top:1px solid var(--line)}.sb:first-child{border-top:0}.sb .h{display:flex;align-items:baseline;gap:8px;font-size:14px;margin-bottom:8px}.sb .h .r{margin-left:auto;font-size:12px;color:var(--tx3);font-variant-numeric:tabular-nums}
+.sb .rg{font-size:12px;color:var(--tx3);width:44px;flex:none;font-variant-numeric:tabular-nums}.sb .lin{height:4px}.sb .m{font-size:12px;color:var(--tx3);margin:6px 0 0 52px}
+.gb{padding:14px 0;border-top:1px solid var(--line);display:flex;gap:12px}.gb:first-child{border-top:0}.gb .ic{width:32px;height:32px;border-radius:10px;background:var(--dgs);color:var(--dg);display:grid;place-items:center;flex:none}.gb.ok .ic{background:var(--acs);color:var(--ac)}
+.gb b{font-weight:600;font-size:14px}.gb p{font-size:13px;color:var(--tx2)}
+.bars{display:flex;align-items:flex-end;gap:6px;height:96px}.bars div{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px}.bars i{width:100%;max-width:18px;border-radius:5px;background:var(--ac);opacity:.85;height:0;transition:height .9s var(--ease)}.bars i.z{background:var(--sf2);opacity:1}.bars span{font-size:10px;color:var(--tx3)}
+/* plan */
+.seg{display:flex;gap:8px;overflow-x:auto;padding:4px 0 12px;scrollbar-width:none}.seg::-webkit-scrollbar{display:none}
+.seg button{flex:none;font-size:13px;padding:6px 12px;border-radius:99px;background:var(--sf);box-shadow:var(--sh);color:var(--tx2);font-weight:500}.seg button.on{background:var(--tx);color:var(--bg)}
+.pr{display:flex;align-items:center;gap:12px;padding:12px 20px;border-top:1px solid var(--line);cursor:pointer;transition:background .15s}.pr:first-child{border-top:0}.pr:hover{background:var(--sf2)}
+.pr .n{width:36px;height:36px;border-radius:10px;background:var(--sf2);display:grid;place-items:center;font-size:13px;font-weight:600;color:var(--tx2);flex:none;font-variant-numeric:tabular-nums}
+.pr.d .n{background:var(--ac);color:#fff}.pr.g:not(.d) .n{box-shadow:inset 0 0 0 2px var(--dg);color:var(--dg)}.pr .t{font-size:15px;font-weight:500}.pr .s{font-size:12px;color:var(--tx2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pr .chev{margin-left:auto;color:var(--tx3)}
+/* timeline */
+.tli{display:flex;gap:12px;padding:14px 20px;border-top:1px solid var(--line);cursor:pointer;position:relative}.tli:first-child{border-top:0}
+.tli .cb{margin-top:2px}.tli .d{font-size:12px;color:var(--tx3);font-variant-numeric:tabular-nums}.tli .x{font-size:15px;font-weight:500}.tli.ok .x{color:var(--tx3);text-decoration:line-through}.tli.now{background:var(--acs)}.tli.now .d{color:var(--ac);font-weight:600}
+table.t{width:100%;border-collapse:collapse;font-size:14px}table.t td{padding:12px 0;border-top:1px solid var(--line);vertical-align:top}table.t tr:first-child td{border-top:0}table.t td:first-child{width:56px;color:var(--tx2);font-weight:500}table.t .t3{font-size:12px}
+.bl{list-style:none}.bl li{padding:10px 0 10px 16px;border-top:1px solid var(--line);font-size:14px;position:relative}.bl li:first-child{border-top:0}.bl li::before{content:"";position:absolute;left:2px;top:19px;width:5px;height:5px;border-radius:50%;background:var(--tx3)}.bl li.bad::before{background:var(--dg)}.dgt{color:var(--dg);font-weight:600}
+.redline{padding:14px 16px;border-radius:var(--r2);background:var(--dgs);font-size:14px;margin-bottom:8px}.redline b{color:var(--dg)}
+/* modal/toast/celebrate */
+.modal{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.32);display:none;align-items:flex-end;justify-content:center}.modal.on{display:flex;animation:fd .2s}@keyframes fd{from{opacity:0}}
+.sheet{background:var(--sf);width:100%;max-width:560px;max-height:88vh;overflow:auto;border-radius:20px 20px 0 0;padding:8px 20px calc(24px + env(safe-area-inset-bottom));box-shadow:var(--sh2);animation:up .35s var(--ease)}
+.grab{width:36px;height:5px;border-radius:9px;background:var(--line);margin:4px auto 12px}
+@media(min-width:700px){.modal{align-items:center}.sheet{border-radius:20px;padding:20px 24px 24px}.grab{display:none}}@keyframes up{from{transform:translateY(32px);opacity:0}}
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translate(-50%,12px);opacity:0;z-index:90;background:var(--tx);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;font-weight:500;transition:.3s var(--ease);pointer-events:none;white-space:nowrap}.toast.on{opacity:1;transform:translate(-50%,0)}
+@media(min-width:900px){.toast{bottom:32px}}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:95}
+.cel{position:fixed;inset:0;z-index:85;display:none;place-items:center;pointer-events:none;background:color-mix(in srgb,var(--bg) 40%,transparent);backdrop-filter:blur(2px)}.cel.on{display:grid;animation:fd .2s}
+.celc{background:var(--sf);border-radius:24px;box-shadow:var(--sh2);padding:28px 36px;text-align:center;animation:pop .5s var(--ease)}
+.celc .ok{width:64px;height:64px;border-radius:50%;background:var(--ac);display:grid;place-items:center;margin:0 auto 12px}.celc .ok svg{width:32px;height:32px;stroke:#fff;stroke-width:3;stroke-dasharray:30;stroke-dashoffset:30;animation:dr .5s .15s var(--ease) forwards}
+.celc b{display:block;font-size:22px;font-weight:700}.celc span{font-size:14px;color:var(--tx2)}@keyframes pop{from{transform:scale(.85);opacity:0}}@keyframes dr{to{stroke-dashoffset:0}}
+.nlist .notice{box-shadow:none;border-radius:0;background:none;padding:16px 20px}.nlist .notice+.notice{border-top:1px solid var(--line)}
+details.more summary{cursor:pointer;list-style:none}details.more summary::-webkit-details-marker{display:none}details.more[open] summary .chev{transform:rotate(90deg)}details.more summary .chev{transition:transform .2s}
+footer{margin-top:40px;font-size:12px;color:var(--tx3);line-height:1.8;text-align:center}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+<div class="top" id="top"><div class="topin"><a class="logo" href="#today"><img src="icon-192.png" alt="" style="width:26px;height:26px;border-radius:7px">上岸计划</a><nav class="tabs" id="tabs"></nav>
+<div class="tright"><span class="clk" id="clk"></span><button class="ib" id="theme" aria-label="切换主题"><svg class="i"><use href="#i-sun"/></svg></button></div></div></div>
+<div class="wrap"><main id="app"></main>
+<footer>数据仅保存在本机浏览器 · 记得在「数据」页定期导出备份<br>手机浏览器「添加到主屏幕」即可离线使用</footer></div>
+<nav class="bnav" id="bnav"></nav>
+<div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
+<div class="toast" id="toast"></div><canvas id="fx"></canvas>
+<div class="cel" id="cel"><div class="celc"><div class="ok"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><b id="celN"></b><span id="celT"></span></div></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+<symbol id="i-today" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z"/></symbol>
+<symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="5.5" rx="8" ry="2.5"/><path d="M4 5.5v13c0 1.4 3.6 2.5 8 2.5s8-1.1 8-2.5v-13M4 12c0 1.4 3.6 2.5 8 2.5s8-1.1 8-2.5"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 019.5 4 8 8 0 1020 14.5z"/></symbol>
+<symbol id="i-auto" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 000 18z" fill="currentColor"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+<symbol id="i-chevl" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3l9.5 17h-19L12 3z"/><path d="M12 10v4M12 17.5v.01"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10A4.5 4.5 0 0112 7a4.5 4.5 0 017.5 3c0 5.4-7.5 10-7.5 10z"/><path d="M8 12h2l1-2 2 4 1-2h2"/></symbol>
+<symbol id="i-bag" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></symbol>
+<symbol id="i-moonrest" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 019.5 4 8 8 0 1020 14.5z"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+<symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h8a3 3 0 000-6H8a3 3 0 010-6h8"/></symbol>
+<symbol id="i-radar" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><path d="M12 12l6-6"/></symbol>
+<symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4z"/></symbol>
+<symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2V5z"/><path d="M4 19a2 2 0 012-2h13"/></symbol>
+<symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1"/></symbol>
+<symbol id="i-git" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="8" r="2"/><path d="M6 8v8M18 10c0 4-6 3-11 6.5"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9l5 3-5 3z"/></symbol>
+<symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 21c-3.9 0-7-2.8-7-6.5C5 10 9 8 9 3c3 2 4.5 4.5 4.5 7 1-1 1.5-2 1.5-3 2.5 2 4 4.5 4 7.5 0 3.7-3.1 6.5-7 6.5z"/></symbol>
+<symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v12M7 11l5 5 5-5M5 20h14"/></symbol>
+<symbol id="i-up" viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M5 20h14"/></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 00-2-2H6a2 2 0 00-2 2v8a2 2 0 002 2h2"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18h2"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
+</defs></svg>
+<script>
+const PLAN=[{"d": 1, "t": "环境搭建与第一个程序", "lessons": "第1-8节（已看完）", "course_practice": "跟视频装Python和PyCharm，写出第一个打印", "night": "关掉视频重敲hello程序；快捷键用熟5个（Ctrl+D、Ctrl+/、Shift+F10等）", "gh": "注册GitHub，建仓库python-learning，上传hello.py", "check": "GitHub网页上能看到代码"}, {"d": 2, "t": "字面量、变量、注释", "lessons": "第9-15节（已看完）", "course_practice": "跟视频敲字面量和变量练习", "night": "定义姓名、年龄、城市变量，格式化打印自我介绍，加注释", "gh": "01字面量.py~07数据类型.py系列", "check": "不看教程独立写变量定义+格式化打印"}, {"d": 3, "t": "数据类型与字符串", "lessons": "第16-21节", "course_practice": "跟敲字符串四种定义和格式化练习", "night": "名言卡片程序：变量存名字和名言，输出'某某说：名言'，练转义换行", "gh": "08字符串.py push", "check": "默写4种字符串定义方式"}, {"d": 4, "t": "类型转换与运算符", "lessons": "第22-27节", "course_practice": "跟敲类型转换和运算符示例", "night": "成绩评级器v1：输入分数，比较+逻辑运算判断等级", "gh": "09运算符.py push", "check": "边界值59/60/89/90全对"}, {"d": 5, "t": "进制与输入语句", "lessons": "第28-30节", "course_practice": "跟敲进制转换和input示例", "night": "BMI计算器：input身高体重，float转换，保留1位小数", "gh": "10输入bmi.py push", "check": "结果和手机计算器一致"}, {"d": 6, "t": "分支结构", "lessons": "第31-34节", "course_practice": "跟敲单/双/多/嵌套分支", "night": "成绩评级器v2：输入校验+嵌套分支", "gh": "11分支.py push", "check": "乱输入不崩溃"}, {"d": 7, "t": "While循环", "lessons": "第35-36节", "course_practice": "跟敲while循环案例", "night": "倒计时程序：input秒数，while+time.sleep(1)；复习Day2-6", "gh": "12while.py push", "check": "倒计时从N到0"}, {"d": 8, "t": "For循环与九九乘法表", "lessons": "第37-41节", "course_practice": "跟敲for、嵌套循环、九九乘法表", "night": "默写九九乘法表；1-100偶数求和", "gh": "13for.py push", "check": "默写一次通过"}, {"d": 9, "t": "break/continue与流程综合", "lessons": "第42-43节", "course_practice": "跟敲continue/break和综合案例", "night": "猜数字游戏：随机1-100，最多7次，break/continue", "gh": "14游戏.py push", "check": "玩3轮正常"}, {"d": 10, "t": "函数入门", "lessons": "第44-47节", "course_practice": "跟敲函数定义和参数", "night": "乘法表封装成函数multiplication_table(n)；问候函数", "gh": "15函数.py push", "check": "n=5和n=9都正确"}, {"d": 11, "t": "函数参数进阶", "lessons": "第48-51节", "course_practice": "跟敲关键字参数、默认值、可变参数", "night": "点餐函数：必选+默认+可变参数，三种调用方式", "gh": "16参数.py push", "check": "默写默认参数和*args"}, {"d": 12, "t": "返回值与作用域", "lessons": "第52-55节", "course_practice": "跟敲None、返回值、作用域、嵌套调用", "night": "四则运算四函数+calc调度函数", "gh": "17return.py push", "check": "calc('+',3,4)返回7", "x": ["Git：分支/merge/.gitignore，练一次冲突解决"]}, {"d": 13, "t": "递归与函数综合", "lessons": "第56-59节", "course_practice": "跟敲递归和综合案例", "night": "递归阶乘、斐波那契第n项；BMI封装成函数", "gh": "18递归.py push", "check": "fib(10)=55"}, {"d": 14, "t": "第一二周复习测验", "lessons": "复习第9-59节", "course_practice": "翻笔记", "night": "让我出15道题闭卷答；错题重学；整理代码", "gh": "README更新", "check": "对12题以上"}, {"d": 15, "t": "列表", "lessons": "第60-64节", "course_practice": "跟敲列表增删改查、切片、排序", "night": "命令行待办清单：add/done/list", "gh": "19列表.py push", "check": "三个操作全对"}, {"d": 16, "t": "列表遍历与练习", "lessons": "第65-68节", "course_practice": "跟敲内置函数、遍历、小练习", "night": "成绩统计：总分/平均/最高最低", "gh": "20列表2.py push", "check": "默写两种遍历"}, {"d": 17, "t": "元组与字符串序列", "lessons": "第69-74节", "course_practice": "跟敲元组、解包、字符串、切片", "night": "车牌解析切片；坐标元组解包", "gh": "21元组.py push", "check": "默写切片语法"}, {"d": 18, "t": "集合", "lessons": "第75-80节", "course_practice": "跟敲集合操作、数学运算", "night": "文字去重统计", "gh": "22集合.py push", "check": "四种容器各说一个场景"}, {"d": 19, "t": "字典", "lessons": "第81-85节", "course_practice": "跟敲字典增删改查、遍历", "night": "通讯录：add查list+模糊查找", "gh": "23字典.py push", "check": "默写两种遍历"}, {"d": 20, "t": "数据容器综合", "lessons": "第86-88节", "course_practice": "跟敲通用操作、小练习", "night": "3同学成绩：平均分+全班最高分", "gh": "24容器.py push", "check": "5道容器题全对"}, {"d": 21, "t": "面向对象入门", "lessons": "第89-93节", "course_practice": "跟敲类、实例、方法、属性", "night": "Student类：构造方法+3实例", "gh": "25oop.py push", "check": "默写类定义", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 22, "t": "类属性与类方法", "lessons": "第94-97节", "course_practice": "跟敲类属性、三种方法", "night": "Student加school类属性和计数器", "gh": "26oop2.py push", "check": "说出三种方法区别", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 23, "t": "继承", "lessons": "第98-101节", "course_practice": "跟敲继承、重写、多重继承", "night": "BankAccount+CreditAccount透支子类", "gh": "27继承.py push", "check": "透支逻辑正确", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 24, "t": "封装与魔法方法", "lessons": "第102-105节", "course_practice": "跟敲私有属性、property、__str__", "night": "BankAccount私有_balance+__str__", "gh": "28魔法.py push", "check": "直接改私有属性报错", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 25, "t": "多态与抽象类", "lessons": "第106-110节", "course_practice": "跟敲多态、抽象类、小练习", "night": "Shape抽象类+Circle/Rect求面积", "gh": "29多态.py push", "check": "解释鸭子类型", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 26, "t": "面向对象复习+项目", "lessons": "复习第89-110节", "course_practice": "无新课", "night": "学生管理系统v1：全OOP写法", "gh": "30项目.py push", "check": "增删查跑通", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 27, "t": "函数进阶", "lessons": "第111-116节", "course_practice": "跟敲解包、高阶、匿名、数据处理", "night": "sorted+lambda排序；map/filter练习", "gh": "31进阶函数.py push", "check": "默写lambda", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 28, "t": "推导式到类型注解", "lessons": "第117-123节", "course_practice": "跟敲推导式、深浅拷贝、闭包、装饰器", "night": "推导式写平方列表；计时装饰器", "gh": "32进阶2.py push", "check": "默写推导式+装饰器结构", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 29, "t": "错误与异常", "lessons": "第124-126节", "course_practice": "跟敲异常处理、自定义异常", "night": "学生系统加异常处理+自定义异常", "gh": "33异常.py push", "check": "乱输入5次不崩", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 30, "t": "模块包与虚拟环境", "lessons": "第127-131节", "course_practice": "跟敲模块、标准库、包、虚拟环境", "night": "代码整理成utils.py模块；建venv并激活", "gh": "整理项目结构push", "check": "独立建虚拟环境装包", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 31, "t": "迭代器与生成器", "lessons": "第132-135节", "course_practice": "跟敲迭代器、生成器", "night": "yield斐波那契生成器；对比内存占用", "gh": "34迭代器.py push", "check": "说出yield和return区别", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）", "SQL①：SQLite建表、SELECT/WHERE/ORDER BY"]}, {"d": 32, "t": "文件操作（读）", "lessons": "第136-139节", "course_practice": "跟敲文件读取、with", "night": "日记本：追加写日记+读取模式", "gh": "35文件.py push", "check": "默写with open", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）", "SQL②：GROUP BY/聚合/JOIN"]}, {"d": 33, "t": "文件操作（写+目录）+记账本", "lessons": "第140-141节", "course_practice": "跟敲目录操作、小练习", "night": "记账本v2：JSON存储，重启余额历史还在", "gh": "accounting/目录push", "check": "数据持久化成功", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）", "SQL③：记账本数据写入SQLite，用SQL出月度统计"]}, {"d": 34, "t": "并发概念入门", "lessons": "第142-146节", "course_practice": "跟敲进程概念demo", "night": "主进程+子进程打印demo（了解级）", "gh": "36进程.py push", "check": "一句话说出进程线程区别", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 35, "t": "Python毕业测验", "lessons": "复习第9-146节", "course_practice": "翻笔记错题", "night": "手写记账本+学生系统合体版；找我出毕业测验", "gh": "毕业项目push", "check": "测验对80%", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 36, "t": "初识大模型API", "lessons": "DeepSeek文档快速开始", "course_practice": "理解API Key/base_url/messages", "night": "venv装requests，chat.py调DeepSeek API打印回复", "gh": "新仓库ai-learning", "check": "出现中文回复", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 37, "t": "多轮对话", "lessons": "文档messages部分", "course_practice": "理解三种角色", "night": "多轮循环对话+system设定+存jsonl", "gh": "push", "check": "聊5轮且历史已存", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 38, "t": "提示词实验①", "lessons": "DeepLearning.AI提示工程课1-3节", "course_practice": "跟课理解两个原则", "night": "同题5种问法对比，记prompt_lab.md", "gh": "push", "check": "10组对比记录", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 39, "t": "提示词实验②", "lessons": "同课程4-6节", "course_practice": "理解temperature", "night": "temperature 0/0.7/1对比实验+结论", "gh": "prompt_lab.md追加", "check": "3条自己的结论", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 40, "t": "结构化输出", "lessons": "同课程剩余章节", "course_practice": "JSON mode与解析", "night": "简历→JSON解析打印", "gh": "push", "check": "连续5次合法JSON", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 41, "t": "项目：面试题生成器①", "lessons": "无新课", "course_practice": "无", "night": "写一页设计文档发我；实现读文件+生成10道题", "gh": "interview_gen建README", "check": "能对真实简历出题", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）", "Git：feature分支 + 自己提PR自审再合并"]}, {"d": 42, "t": "项目：面试题生成器②", "lessons": "无新课", "course_practice": "无", "night": "按难度分档存md；测3份简历", "gh": "push", "check": "md排版可直接用", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 43, "t": "项目打磨+复盘", "lessons": "无新课", "course_practice": "无", "night": "完整README+录3分钟demo+总结发我", "gh": "README+push", "check": "朋友看得懂", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 44, "t": "阶段复习测验", "lessons": "复习Day36-43", "course_practice": "翻笔记", "night": "让我出10道测验；最后关键一步：把面试题生成器发给3个正在找工作的同学/朋友，让他们用，收反馈", "gh": "错题push", "check": "有3个真实用户的使用反馈记录（好坏都算）", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 45, "t": "Embedding入门", "lessons": "尚硅谷LangChain课向量章节", "course_practice": "跟课理解向量", "night": "3句话转向量打印维度；算余弦相似度；本周起每周日脉脉发1条学习记录+GitHub截图（埋内推种子，≤30分钟，不经营不互动）", "gh": "rag/开工", "check": "排序符合直觉", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 46, "t": "Chroma向量库", "lessons": "同课程Chroma/Milvus章节", "course_practice": "跟课操作向量库", "night": "插20条句子查top3", "gh": "push", "check": "结果合理", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 47, "t": "RAG流程与PDF读取", "lessons": "同课程文档加载章节", "course_practice": "跟课读PDF", "night": "画RAG流程图；读一份真实设备说明书PDF（电机/PLC/减速机均可）提取文字——为项目2攒语料", "gh": "流程图+代码push", "check": "能讲清RAG四步", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 48, "t": "切块与入库", "lessons": "同课程切分章节", "course_practice": "跟课切分", "night": "500字切块带重叠，算embedding存Chroma；同时把设备手册也入一个独立库", "gh": "push", "check": "数量维度正确", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 49, "t": "RAG最小闭环（关键日）", "lessons": "同课程RAG章节", "course_practice": "跟课拼完整RAG", "night": "提问→检索3块→拼prompt→回答，今天必须跑通", "gh": "commit写'RAG v1 works'", "check": "答对", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 50, "t": "检索调优", "lessons": "无新课", "course_practice": "无", "night": "top-k=1/3/5/10对比实验记rag_lab.md", "gh": "push", "check": "有对比表和结论", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 51, "t": "提示词模板与拒答", "lessons": "同课程模板章节", "course_practice": "跟课写模板", "night": "严格模板；测资料外问题", "gh": "push", "check": "资料外拒答", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 52, "t": "引用来源", "lessons": "无新课", "course_practice": "无", "night": "回答附来源块编号，可回溯原文", "gh": "push", "check": "可追溯", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 53, "t": "多轮RAG", "lessons": "无新课", "course_practice": "无", "night": "支持追问，测2轮连贯性", "gh": "push", "check": "追问答对", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 54, "t": "健壮性", "lessons": "无新课", "course_practice": "无", "night": "异常处理+进度提示，喂坏文件不崩", "gh": "push", "check": "优雅报错", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 55, "t": "失败案例分析", "lessons": "无新课", "course_practice": "无", "night": "10个难问题测，记5个失败案例并分析", "gh": "rag_lab.md", "check": "5条分析", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 56, "t": "改进与评估", "lessons": "无新课", "course_practice": "无", "night": "改进2个案例复测；10题评估集算准确率", "gh": "push", "check": "修复1个", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 57, "t": "项目1打磨①", "lessons": "尚硅谷客服知识库项目章节", "course_practice": "看老师做完整项目", "night": "代码模块化：loader/chunker/retriever/generator", "gh": "push重构", "check": "模块清晰", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 58, "t": "项目1打磨②", "lessons": "同课程部署章节（先了解）", "course_practice": "无", "night": "完整README+运行脚本+3分钟demo", "gh": "README+push", "check": "照README能跑", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 59, "t": "RAG验收+工作台v1", "lessons": "复习Day45-58", "course_practice": "无", "night": "RAG测验+重默核心管道；把RAG跑在自己ai-life文件夹上（问学习日志、问账本），你是第1个真实用户；附加小工具：JD拆解（贴JD→提取技能要求→对照简历缺口）", "gh": "错题push", "check": "测验80%；工作台v1上线（含JD拆解小工具）；连续自用3天", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 60, "t": "Agent入门与工具调用", "lessons": "尚硅谷LangChain工具/Agent章节", "course_practice": "跟课写第一个工具", "night": "get_time工具跑通function calling；然后写「故障码查询」工具（读一张故障码CSV，按码返回含义）", "gh": "agent/开工", "check": "模型调用工具", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 61, "t": "多工具与选择", "lessons": "同课程后续", "course_practice": "跟课", "night": "多工具自动选择：故障码查询 + 计算器（如电机额定电流估算）", "gh": "push", "check": "问题能选对工具", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 62, "t": "ReAct与记忆", "lessons": "同课程Agent章节", "course_practice": "跟课理解循环", "night": "打印思考-行动-观察日志；跨3轮记忆：追问「那下一步查什么？」能接上", "gh": "push", "check": "记忆生效", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 63, "t": "错误处理", "lessons": "无新课", "course_practice": "无", "night": "失败重试+最大循环限制；工具报错时返回人话提示", "gh": "push", "check": "故意失败不崩", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 64, "t": "项目2设计：设备故障诊断助手", "lessons": "无新课", "course_practice": "无", "night": "一页设计文档发我：用户=设备维修工/班组长；输入=故障现象/工单；能力=手册RAG检索+工单分析+排查步骤+维修报告；搭主循环", "gh": "新仓库 fault-diagnosis-agent，README写设计", "check": "设计文档通过+骨架跑通", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 65, "t": "诊断工具实现", "lessons": "无新课", "course_practice": "无", "night": "3个工具：①手册检索（复用项目1的RAG）②工单解析（非结构化工单→JSON：设备/现象/时间/处理）③故障码查询；各写单元测试", "gh": "push", "check": "3个工具测试全过", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 66, "t": "工单分析与排查建议", "lessons": "无新课", "course_practice": "无", "night": "造20条模拟维修工单（用你在华兴的真实场景改写，去敏）；Agent对每条输出：可能原因Top3+排查步骤+引用手册页码", "gh": "push", "check": "20条中≥14条建议合理（自己按经验打分）", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 67, "t": "维修报告生成+Dify对比", "lessons": "Dify官方文档（只看1小时）", "course_practice": "了解低代码", "night": "按模板生成维修报告（Markdown→可导出）；用Dify复刻核心流程30分钟，写对比笔记：为什么自研", "gh": "笔记push", "check": "一键生成完整维修报告", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 68, "t": "Agent验收+项目2 v1", "lessons": "复习Day60-67", "course_practice": "无", "night": "Agent测验+现场写骨架；项目2 v1打标签；发给1-2位机电/制造业朋友（或原同事）试用，记录反馈", "gh": "项目2完整push+v1 tag", "check": "测验80%；项目2 v1上线；≥1位行业用户反馈记录", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 69, "t": "Gradio界面", "lessons": "Gradio文档快速入门", "course_practice": "跟文档", "night": "项目2加Gradio界面：上传手册PDF / 粘贴工单 → 显示排查建议和报告", "gh": "push", "check": "浏览器可用", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 70, "t": "Streamlit对比", "lessons": "Streamlit文档", "course_practice": "无", "night": "用Streamlit重做项目1界面+对比笔记（两种框架各用一次）", "gh": "push+笔记", "check": "笔记完成", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 71, "t": "界面增强", "lessons": "无", "course_practice": "无", "night": "项目2界面增强：历史工单列表+加载提示+错误提示", "gh": "push", "check": "行业朋友能独立用", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 72, "t": "FastAPI服务化", "lessons": "FastAPI文档入门", "course_practice": "跟文档", "night": "项目2包成API（/diagnose、/report），curl调用", "gh": "push", "check": "返回JSON", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 73, "t": "依赖与Docker", "lessons": "Docker文档入门", "course_practice": "无", "night": "requirements.txt新环境验证+Dockerfile", "gh": "push", "check": "docker run可访问", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 74, "t": "云部署", "lessons": "云厂商轻量服务器教程", "course_practice": "无", "night": "开服务器部署拿公网地址", "gh": "README部署说明", "check": "手机流量能开", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 75, "t": "稳定与成本", "lessons": "无", "course_practice": "无", "night": "超时限流日志；token成本写README", "gh": "push", "check": "知道单次成本", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 76, "t": "个人主页", "lessons": "GitHub Pages教程", "course_practice": "无", "night": "主页展示两项目：工作台v1 + 设备故障诊断助手（突出「机电制造背景×AI落地」故事）+ demo + 联系方式", "gh": "主页上线", "check": "链接可分享", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 77, "t": "工程化验收", "lessons": "复习Day69-76", "course_practice": "无", "night": "全流程演练+测验", "gh": "问题清单清零", "check": "验收通过", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）"]}, {"d": 78, "t": "简历初稿", "lessons": "Boss直聘看5个JD", "course_practice": "分析JD要求", "night": "简历初稿按问题-方案-结果写，项目2放第一位，发我改", "gh": "README美化", "check": "初稿通过", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）", "八股：LLM基础（Transformer/token/temperature/上下文窗口）"]}, {"d": 79, "t": "GitHub门面", "lessons": "看优秀开发者主页", "course_practice": "无", "night": "置顶项目+个人简介", "gh": "门面完成", "check": "10秒看懂你是谁", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）", "八股：RAG（切块/召回/重排/评估指标）"]}, {"d": 80, "t": "Boss直聘上线", "lessons": "研究打招呼话术", "course_practice": "无", "night": "注册完善投10家练手并记录；渠道配比：BOSS直聊35家+脉脉内推10家+大厂官网5家，建表记录各渠道回复率", "gh": "无", "check": "10家已投", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）", "八股：Agent（ReAct/function calling/记忆/规划）"]}, {"d": 81, "t": "模拟面试①基础", "lessons": "收集常见面试题", "course_practice": "无", "night": "Kimi扮面试官模拟+录音复盘", "gh": "错题本", "check": "复盘完成", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）", "八股：Python高频（GIL/生成器/装饰器/深浅拷贝）"]}, {"d": 82, "t": "模拟面试②项目", "lessons": "STAR法则", "course_practice": "无", "night": "两项目3分钟陈述+10追问，脱稿", "gh": "无", "check": "能脱稿", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）", "八股：项目深挖（为什么这么设计、失败案例、成本）"]}, {"d": 83, "t": "模拟面试③开放题", "lessons": "看近期AI新闻", "course_practice": "无", "night": "观点+论据表达练习", "gh": "无", "check": "结构清晰", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）", "八股：SQL+Git+Docker 常见问题"]}, {"d": 84, "t": "总验收与下一程", "lessons": "全程回顾", "course_practice": "无", "night": "对比第1天和今天代码；写信：已会什么/还缺什么/深圳前30天计划；按关卡3实测的各渠道回复率数据调整主力渠道，不凭感觉", "gh": "最终版push", "check": "进入求职冲刺", "x": ["算法：LeetCode 简单题1道（≤30分钟，记题解）", "八股：全量过一遍错题本"]}];
+const STAGES=[
+ {a:1,b:13,t:"Python 基础",s:"变量→分支→循环→函数",c:"尚硅谷核心全解 1–59节",v:"各日默写验收"},
+ {a:14,b:14,t:"复习+第一次测验",s:"阶段复盘",c:"—",v:"15题对12"},
+ {a:15,b:20,t:"数据容器",s:"列表/元组/集合/字典",c:"60–88节",v:"容器综合测验"},
+ {a:21,b:26,t:"面向对象",s:"OOP + 学生系统小项目",c:"89–110节",v:"OOP 项目跑通"},
+ {a:27,b:34,t:"函数进阶/异常/模块",s:"文件/并发概念 · 记账本项目",c:"111–146节",v:"记账本项目"},
+ {a:35,b:35,t:"Python 毕业测验",s:"关卡1",c:"—",v:"对80%"},
+ {a:36,b:44,t:"大模型API+提示工程",s:"面试题生成器项目",c:"DeepSeek文档+DeepLearning.AI短课",v:"项目可运行"},
+ {a:45,b:59,t:"RAG → 个人工作台v1",s:"跑在自己的ai-life文件夹上",c:"尚硅谷LangChain课对应章节",v:"测验80%"},
+ {a:60,b:68,t:"Agent → 个人工作台v2",s:"能读写ai-life文件",c:"尚硅谷LangChain课对应章节",v:"测验80%"},
+ {a:69,b:77,t:"界面与部署",s:"Gradio/FastAPI/Docker/云部署",c:"Gradio/FastAPI/Docker文档",v:"手机公网可访问"},
+ {a:78,b:84,t:"求职冲刺",s:"简历/GitHub门面/Boss直聘/三轮模拟面试",c:"—",v:"10家已投+模拟面通过"}];
+const GATES={35:"关卡1：Python毕业测验不过 → 停下诊断",49:"关卡2：RAG跑不通 → 停下诊断"};
+const HABITS=[
+ {id:"body",t:"身体：运动或散步 20 分钟",s:"头疼是报警器——身体是碳基服务器"},
+ {id:"note",t:"数据：学习笔记",s:"写入 ai-life / 学习日志.md"},
+ {id:"spend",t:"数据：记账",s:"开销记入 ai-life / 账本.md，无收入期每笔都要知道去向"},
+ {id:"cross",t:"认知：交叉验证",s:"当天一个重要判断用两个不同模型确认"},
+ {id:"create",t:"创造 > 消费",s:"今天产出点什么，少刷半小时短视频"},
+ {id:"sleep",t:"睡眠：23:30 熄灯",s:"防报复性熬夜；手机放客厅充电"}];
+const TL=[
+ {d:"2026-10-12",k:"2026-10-12",t:"本档案建立；打卡第1、2天完成"},
+ {d:"10-13/14",k:"2026-10-14",t:"医院挂号看头疼；翻劳动合同确认试用期条款",m:1},
+ {d:"2026-10-15",k:"2026-10-15",t:"领工资 + 提离职 + 协商提前走 + 问清社保/离职证明",m:1},
+ {d:"10-16 ~ 10-19",k:"2026-10-19",t:"休息、治病、收拾，不学习"},
+ {d:"2026-10-20",k:"2026-10-20",t:"全职学习启动：每天6-8小时，平均1.5个计划日，每7天1个复盘缓冲日"},
+ {d:"2026-11-02",k:"2026-11-02",t:"全职自学「审判期」宣判：是否需外部结构（培训班）"},
+ {d:"2026-11-13",k:"2026-11-13",t:"关卡1：Python毕业测验（第35天）"},
+ {d:"2026-11-24",k:"2026-11-24",t:"关卡2：RAG最小闭环跑通（第49天）"},
+ {d:"2026-12-02",k:"2026-12-02",t:"项目1 个人工作台v1上线（第59天）"},
+ {d:"2026-12-09",k:"2026-12-09",t:"项目2 设备故障诊断助手v1上线（第68天）"},
+ {d:"2026-12-22",k:"2026-12-22",t:"84天计划全部完成"},
+ {d:"12-17 ~ 12-31",k:"2026-12-31",t:"关卡3：远程投50家试水，视频面试"},
+ {d:"2027-01月中",k:"2027-01-11",t:"南下深圳（春节2/6前先面一轮，节后金三银四主战场）"},
+ {d:"拿到offer后",k:"2027-03-31",t:"副业（抖音/闲鱼）解冻；第59天后最多每天0.5小时试水"}];
+const MS=[
+ {date:"2026-10-15",l:"领工资 · 提离职",s:"看试用期条款 · 要离职证明",hot:1},
+ {date:"2026-10-20",l:"全职学习启动",s:"日均1.5个计划日 · 每7天复盘"},
+ {date:"2026-11-02",l:"自学审判日",s:"是否需要外部结构（培训班）"},
+ {date:"2026-11-13",l:"关卡1 · Python毕业测验",s:"第35天 · 对80%",hot:1},
+ {date:"2026-11-24",l:"关卡2 · RAG跑通",s:"第49天 · 跑不通停下诊断",hot:1},
+ {date:"2026-12-09",l:"项目2 v1上线",s:"设备故障诊断助手"},
+ {date:"2026-12-22",l:"84天计划完工",s:"两个项目上线"},
+ {date:"2026-12-31",l:"关卡3 · 远程投50家",s:"零面试 → 修简历作品集再南下"},
+ {date:"2027-01-11",l:"南下深圳",s:"只降岗位不降城市 · 绝不回锦州"}];
+const ROAD=[{d:"第1-35天",t:"Python 核心全解（尚硅谷 1-146节）",a:1,b:35},{d:"第36-44天",t:"DeepSeek API + 提示工程 · 面试题生成器",a:36,b:44},{d:"第45-59天",t:"RAG · 项目1：个人工作台 v1",a:45,b:59},{d:"第60-68天",t:"Agent · 项目2：个人工作台 v2",a:60,b:68},{d:"第69-77天",t:"Gradio / FastAPI / Docker 云部署",a:69,b:77},{d:"第78-84天",t:"简历投递 · 模拟面试 · 渠道配比",a:78,b:84}];
+const PRIN=["主业是AI工程师；财富自由来自 高工资+定投+创业/股权，不来自副业","保持流动性：不买房车、不负债；存款=选择权","去增量市场（AI应用→具身智能），不挤存量市场","先探路再下注：所有大决定设置止损关卡和资金红线","报班/留学的钱买不来就业，只买环境——环境有更便宜的解法","孙宇晨的话能听，孙宇晨卖的任何产品不买；闲鱼认知课不买","身体是碳基服务器：头疼是报警器，不是软弱","工具是服务学习的，研究工具不能成为逃避学习的借口","不百分百信任任何人（包括Kimi）：重要判断交叉验证","先上路比想清楚为什么上路更重要——但方向盘必须在自己手里"];
+const WHY=["每天上班头疼一整天，每天想哭——身体和精神持续报警","月薪到手4000元，两年也攒不下改变命运的资本","岗位与计算机专业完全脱节，干得越久越回不去本行","22岁无房贷无家庭拖累，是唯一「输得起」的窗口期","留着的风险是慢性的（健康恶化+技能生锈+窗口关闭），走的风险是一次性的、可设止损的"];
+const RADAR=[["行业","阶跃发布 Neo 智能体手机：Agent 落地加速，Agent 工程岗位需求看涨"],["技术","模型路由成热词：小模型分类 + 大模型主攻，已写入第60-68天计划"],["政策","具身智能上新闻联播：国家层面加码，AI+机器人赛道景气延续"]];
+const QUOTES=["第一遍必须自己敲，禁止复制粘贴","卡住超20分钟才准问 AI，且只要提示不要完整答案","每天结束关掉 AI 默写当天所学，默不出=没学会","让数据当主编，不让心情当主编","先上路——但方向盘必须在自己手里"];
+/* ---------- state ---------- */
+const KEY="lpx_study_v2",DAY=864e5;
+const pad=n=>String(n).padStart(2,"0"),ds=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const def=()=>({v:2,done:{1:"2026-10-12",2:"2026-10-12"},habits:{},tl:{0:true},notes:{},reviews:{},healthOk:false,theme:"auto"});
+let S;try{S=Object.assign(def(),JSON.parse(localStorage.getItem(KEY))||{});
+ if(!localStorage.getItem(KEY)){const o=JSON.parse(localStorage.getItem("studyapp_v1")||"null");if(o&&o.done){S.done=o.done;S.tl=o.tl||S.tl;}}}catch(e){S=def()}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const TOV=new URLSearchParams(location.search).get("date");let T=TOV||ds(new Date());const FT=new Date(2026,9,20);
+const cntOn=t=>{const k=Math.round((new Date(t+"T00:00:00")-FT)/DAY);if(k<0)return 0;const p=k%7;return p===6?0:(p%2===0?2:1)};
+const isBuffer=t=>{const k=Math.round((new Date(t+"T00:00:00")-FT)/DAY);return k>=0&&k%7===6};
+const stageOf=n=>STAGES.find(s=>n>=s.a&&n<=s.b),P=n=>PLAN[n-1];
+const doneN=()=>Object.keys(S.done).length;
+const nextUndone=c=>{const r=[];for(let i=1;i<=84&&r.length<c;i++)if(!S.done[i])r.push(i);return r};
+function sched(t){const k=Math.round((new Date(t+"T00:00:00")-FT)/DAY);if(k<0)return null;let a=3;for(let i=0;i<k;i++){const d=new Date(FT);d.setDate(d.getDate()+i);a+=cntOn(ds(d))}const c=cntOn(t);return Array.from({length:c},(_,i)=>a+i).filter(x=>x<=84)}
+function phase(){if(T<"2026-10-16")return"job";if(T<="2026-10-19")return"rest";return isBuffer(T)?"buffer":"full"}
+function actDays(){const s=new Set(Object.values(S.done));for(const k in S.habits)if(Object.values(S.habits[k]).some(Boolean))s.add(k);return s}
+function streak(){const s=actDays();let n=0,d=new Date();if(!s.has(ds(d)))d.setDate(d.getDate()-1);while(s.has(ds(d))){n++;d.setDate(d.getDate()-1)}return n}
+function best(){const a=[...actDays()].sort();let b=0,c=0,p=null;for(const x of a){const d=new Date(x+"T00:00:00");c=p&&(d-p)/DAY===1?c+1:1;b=Math.max(b,c);p=d}return b}
+function lessonsDone(){let m=0;for(const k in S.done){const x=P(+k);if(!x)continue;const r=x.lessons.match(/第(\d+)[-–](\d+)节/);if(r&&+k<=34)m=Math.max(m,+r[2])}return m}
+function eta(){let n=84-doneN();if(n<=0)return"已完成";const d=new Date(Math.max(new Date(T+"T00:00:00"),FT));const st=sched(T);if(st&&st.length&&st.every(x=>S.done[x]))d.setDate(d.getDate()+1);for(let g=0;g<400;g++){n-=cntOn(ds(d));if(n<=0)break;d.setDate(d.getDate()+1)}return(d.getMonth()+1)+"月"+d.getDate()+"日"}
+const UNVERIFIED=["脉脉「80%的AI人才活跃在脉脉」——来源不明的营销口径，未核实","简历按JD定制「HR回复率从个位数提升到38%」——自媒体单一样本，只信方向不信数字","BOSS直聘AI岗位增速等数据来自公开报道转述，以第72-77天实测各渠道回复率为准"];
+/* ---------- ui ---------- */
+const $=s=>document.querySelector(s);
+const I=(n,c="")=>`<svg class="i ${c}"><use href="#i-${n}"/></svg>`;
+const WD="日一二三四五六";
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("on"),2000)}
+function confetti(){const c=$("#fx"),x=c.getContext("2d"),dp=devicePixelRatio||1,W=c.width=innerWidth*dp,H=c.height=innerHeight*dp;c.style.width=innerWidth+"px";c.style.height=innerHeight+"px";
+ const ac=getComputedStyle(document.documentElement).getPropertyValue("--ac").trim()||"#5E5CE6",cols=[ac,ac,"#A5B4FC","#C7D2FE","#FBBF24"];
+ const ps=Array.from({length:70},()=>({x:W*(.3+Math.random()*.4),y:H*.42,vx:(Math.random()-.5)*W*.018,vy:-(Math.random()*H*.016+H*.006),r:(Math.random()*4+4)*dp,c:cols[Math.random()*cols.length|0],a:Math.random()*6,va:(Math.random()-.5)*.2}));
+ let f=0;(function L(){x.clearRect(0,0,W,H);ps.forEach(p=>{p.vy+=H*.0005;p.vx*=.985;p.x+=p.vx;p.y+=p.vy;p.a+=p.va;x.save();x.translate(p.x,p.y);x.rotate(p.a);x.globalAlpha=Math.max(0,1-f/120);x.fillStyle=p.c;x.beginPath();x.roundRect?x.roundRect(-p.r/2,-p.r/4,p.r,p.r/2,p.r/6):x.rect(-p.r/2,-p.r/4,p.r,p.r/2);x.fill();x.restore()});if(++f<120)requestAnimationFrame(L);else x.clearRect(0,0,W,H)})()}
+function celebrate(n,t){$("#celN").textContent=n;$("#celT").textContent=t;const c=$("#cel");c.classList.remove("on");void c.offsetWidth;c.classList.add("on");setTimeout(()=>c.classList.remove("on"),1500);confetti();if(navigator.vibrate)navigator.vibrate(30)}
+function animateIn(){requestAnimationFrame(()=>requestAnimationFrame(()=>{document.querySelectorAll("[data-w]").forEach(e=>e.style.width=e.dataset.w);document.querySelectorAll("[data-h2]").forEach(e=>e.style.height=e.dataset.h2);document.querySelectorAll("[data-off]").forEach(e=>e.style.strokeDashoffset=e.dataset.off)}))}
+function ring(n,size){const r=54,C=2*Math.PI*r;return `<div class="ring"${size?` style="width:${size}px;height:${size}px"`:''}><svg viewBox="0 0 128 128"><circle class="bgc" cx="64" cy="64" r="${r}" fill="none" stroke-width="10"/><circle class="fgc" cx="64" cy="64" r="${r}" fill="none" stroke-width="10" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C}" data-off="${C*(1-n/84)}"/></svg><div class="c"><b>${n}</b><span>/ 84 天</span></div></div>`}
+function dayBlock(n,full){const d=P(n),s=stageOf(n);return `<div class="task"><div class="tl1"><span class="n">第 ${n} 天</span><span>·</span><span>${esc(s.t)}</span>${S.done[n]?`<span class="chip" style="margin-left:auto">${I("check","s")}已完成</span>`:GATES[n]?`<span class="chip d" style="margin-left:auto">关卡</span>`:''}</div>
+<div class="tt">${esc(d.t)}</div><dl class="dl"><dt>课程</dt><dd>${esc(d.lessons)}</dd><dt>教程实操</dt><dd>${esc(d.course_practice)}</dd><dt>晚上任务</dt><dd>${esc(d.night)}</dd><dt>GitHub</dt><dd class="code">${esc(d.gh)}</dd>${d.x?`<dt>加练</dt><dd>${d.x.map(esc).join("<br>")}</dd>`:""}</dl>
+<div class="acc">${I("check","s")}<div><b>验收</b>${esc(d.check)}</div></div>${GATES[n]?`<div class="gate">${I("alert","s")}<div>${GATES[n]}</div></div>`:''}${n===s.b&&s.a!==s.b?`<div class="xs t3" style="margin-top:8px">阶段验收：${esc(s.v)}</div>`:''}
+${full?`<button class="btn ${S.done[n]?'':'pri'}" style="margin-top:20px" data-tog="${n}">${S.done[n]?'撤销完成':I("check")+'标记第 '+n+' 天完成'}</button>`:''}</div>`}
+function openDay(n){$("#sheet").innerHTML=`<div class="grab"></div><div style="display:flex;align-items:center;margin-bottom:12px"><span class="sm t2">计划日详情</span><button class="ib" style="margin-left:auto" data-close aria-label="关闭">${I("x")}</button></div>${dayBlock(n,1)}
+<div style="display:flex;gap:8px;margin-top:8px">${n>1?`<button class="btn" data-open="${n-1}">${I("chevl","s")}第 ${n-1} 天</button>`:''}${n<84?`<button class="btn" data-open="${n+1}">第 ${n+1} 天${I("chev","s")}</button>`:''}</div>`;$("#modal").classList.add("on")}
+function closeModal(){$("#modal").classList.remove("on")}
+function det(icon,title,body,open,rt){return `<details class="card"${open?" open":""}><summary><span class="sic">${I(icon,"s")}</span>${title}${rt?`<span class="t3 sm" style="font-weight:400;margin-left:auto">${rt}</span>`:''}<span class="chev"${rt?' style="margin-left:8px"':''}>${I("chev","s")}</span></summary><div class="db">${body}</div></details>`}
+function dDiff(date){return Math.round((new Date(date+"T00:00:00")-new Date(T+"T00:00:00"))/DAY)}
+function reviewCard(){const r=(S.reviews||{})[T]||{};const k=Math.round((new Date(T+"T00:00:00")-FT)/DAY);const ws=new Date(FT);ws.setDate(ws.getDate()+k-6);let pl=0,dn=0;for(let i=0;i<6;i++){const d=new Date(ws);d.setDate(d.getDate()+i);(sched(ds(d))||[]).forEach(x=>{pl++;if(S.done[x])dn++})}
+ return `<div class="card"><div class="ch">第 ${Math.floor(k/7)+1} 周复盘<span class="rt">本周计划 ${pl} 天 · 已完成 ${dn}</span></div>
+ ${[["a","完成度","本周完成了哪些计划日？习惯块几天达标？睡眠几天做到23:30？"],["b","卡点","卡在哪个知识点/任务？卡了多久？头疼情况？"],["c","下周调整","下周要补什么、改什么？（雷达建议须我同意才改）"]].map(([f,l,p])=>`<div style="margin-bottom:12px"><div class="sm" style="font-weight:600;margin-bottom:6px">${l}</div><textarea data-rv="${f}" style="min-height:64px" placeholder="${p}">${esc(r[f]||"")}</textarea></div>`).join("")}<div class="xs t3">自动保存 · 每周日顺手全量 push ai-life 到 GitHub 私有仓库</div></div>`}
+const PG={};
+PG.today=()=>{const ph=phase(),sc=sched(T),nu=nextUndone(ph==="full"&&sc&&sc.length?Math.max(1,sc.length):2),n=doneN(),hb=S.habits[T]||{},hc=HABITS.filter(h=>hb[h.id]).length,dt=new Date(T+"T00:00:00");
+ const chip=ph==="job"?`<span class="chip w">${I("bag","s")}离职准备期</span>`:ph==="rest"?`<span class="chip n">${I("moon","s")}休息期 · 不学习</span>`:ph==="buffer"?`<span class="chip n">${I("pen","s")}复盘缓冲日 · 不推新课</span>`:`<span class="chip">${I("flame","s")}全职 · 今日${(sc||[]).length}个计划日</span>`;
+ const behind=sc&&sc.length&&nu.length&&nu[0]<sc[0];
+ const title=ph==="buffer"?"复盘 + 补课":nu.length?`第 ${nu.join("–")} 天`:"全部完成";
+ let notices="";
+ if(ph==="buffer")notices+=`<div class="notice"><span class="ic" style="background:var(--acs);color:var(--ac)">${I("pen","s")}</span><div><b>复盘缓冲日</b><p>不推进新计划日。先写下面的周复盘，再补本周落下的任务；都做完就休息。</p></div></div>`;
+ if(ph==="rest")notices+=`<div class="notice"><span class="ic" style="background:var(--acs);color:var(--ac)">${I("moon","s")}</span><div><b>休息期 10/16 – 10/19</b><p>今天不学习。优先就医（神经内科看头疼）、睡够、收拾。10月20日全职启动。</p></div></div>`;
+ if(ph==="job")notices+=`<div class="notice"><span class="ic">${I("bag","s")}</span><div><b>${T==="2026-10-15"?"今天：领工资 · 提离职":"离职准备期"}</b><p>协商提前走，问清社保、离职证明、医保续缴（灵活就业）。10/16–19 休息治病，10/20 全职启动。</p></div></div>`;
+ if(!S.healthOk)notices+=`<div class="notice d"><span class="ic">${I("heart","s")}</span><div><b>头疼还没确认就医</b><p>挂神经内科完成检查。身体是碳基服务器，头疼是报警器，不是软弱。</p></div><button class="x" id="hok">已就医</button></div>`;
+ const main=`<div class="card"><div class="hero">${ring(n)}<div class="hinfo"><div class="k">${ph==="full"?"今日计划":ph==="buffer"?"今天：周复盘":"下一个计划日"}</div><div class="big">${title}</div>${chip}</div></div>
+  <div class="mstats"><div><b>${streak()}<span class="t3" style="font-size:13px;font-weight:400"> 天</span></b><span>连续打卡</span></div><div><b>${lessonsDone()}<span class="t3" style="font-size:13px;font-weight:400">/146</span></b><span>Python 课节</span></div><div><b style="font-size:17px;line-height:30px">${eta()}</b><span>预计完工</span></div></div></div>
+  ${notices?`<div class="card p0 nlist">${notices}</div>`:''}
+  ${ph==="buffer"?reviewCard():""}<div class="card"><div class="ch">${ph==="full"?"今日任务":ph==="buffer"?"可选补课":"下一步任务"}<span class="rt">${sc&&sc.length?(behind?`<span style="color:var(--wn)">按节奏应到第 ${sc.join("、")} 天</span>`:`按节奏 · 第 ${sc.join("、")} 天`):"预习"}</span></div>
+  ${nu.length?nu.map(x=>dayBlock(x)).join(""):'<div class="tt">84天计划全部完成，进入求职冲刺。</div>'}
+  ${nu.length?`<button class="cta" id="dk">${I("check")}打卡 第 ${nu.join("–")} 天</button><div class="hint">记得 push 到 GitHub · commit 用 dayXX: 说明</div>`:''}</div>`;
+ const habits=`<div class="card p0"><div class="ch" style="padding:16px 20px 4px;margin:0">每日习惯<span class="rt">每天重置</span></div><div>${HABITS.map(x=>`<label class="hab"><input type="checkbox" data-hb="${x.id}" ${hb[x.id]?"checked":""}><span class="cb"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><div><div class="ht">${x.t.replace(/^.+?：/,"")}</div><div class="hs">${x.s}</div></div></label>`).join("")}</div>
+  <div class="hbar"><span><b id="hc" style="color:var(--tx)">${hc}</b> / ${HABITS.length}</span><div class="lin"><i id="hbar" data-w="${hc/HABITS.length*100}%"></i></div></div></div>`;
+ const cds=MS.map(m=>{const df=dDiff(m.date);const cls=df<0?"":(m.hot&&df<=3?"hot":df<=7?"soon":"");return `<div class="row ${df<0?"past":""}"><div class="cdt"><b>${m.l}</b><span>${m.date.slice(5).replace("-","/")} · ${m.s}</span></div><div class="cdn ${cls}">${df<0?'<small>已过</small>':df===0?'今天':df+'<small>天</small>'}</div></div>`}).join("");
+ const up=MS.filter(m=>dDiff(m.date)>=0),past=MS.filter(m=>dDiff(m.date)<0);const cdr=m=>{const df=dDiff(m.date);const cls=df<0?"":(m.hot&&df<=3?"hot":df<=7?"soon":"");return `<div class="row ${df<0?"past":""}"><div class="cdt"><b>${m.l}</b><span>${m.date.slice(5).replace("-","/")} · ${m.s}</span></div><div class="cdn ${cls}">${df<0?'<small>已过</small>':df===0?'今天':df+'<small>天</small>'}</div></div>`};
+ const rest=[...up.slice(4),...past];
+ const side=`${habits}<div><h2 class="sec" style="margin-top:8px">关键倒计时</h2><div class="card p0 cdl">${up.slice(0,4).map(cdr).join("")}${rest.length?`<details class="more"><summary class="row" style="color:var(--ac);font-size:14px;font-weight:500">查看全部 ${MS.length} 项<span class="chev" style="margin-left:auto">${I("chev","s")}</span></summary>${rest.map(cdr).join("")}</details>`:''}</div></div>`;
+ const more=`<h2 class="sec">更多</h2><div class="g2">
+  ${det("route","阶段路线",`<ul class="road">${ROAD.map(r=>{const cur=nu[0]||85,c=cur>r.b?"past":cur>=r.a?"now":"";let k=0;for(let i=r.a;i<=r.b;i++)if(S.done[i])k++;return `<li class="${c}"><span class="d">${r.d.replace("第","").replace("天","")}</span><span class="t">${r.t}</span><span class="p">${k}/${r.b-r.a+1}</span></li>`}).join("")}</ul>`,0,ROAD.find(r=>(nu[0]||85)>=r.a&&(nu[0]||85)<=r.b)?.d||"")}
+  ${det("pen","今日笔记",`<textarea id="note" placeholder="今天学会了什么？卡在哪？头疼几分？">${esc(S.notes[T]||"")}</textarea><div class="xs t3" style="margin-top:8px">自动保存</div>`,0,S.notes[T]?"已写":"")}
+  ${det("radar","情报雷达",`${RADAR.map(r=>`<div class="li"><span class="lab">${r[0]}</span>${r[1]}</div>`).join("")}<div class="xs t3" style="margin-top:8px">最近一期 10-13 · 每天 7:45 扫描，只有建议权，改计划须我同意</div>`,0,"10-13")}
+  ${det("book","三条学习纪律",`<ol class="ol">${QUOTES.slice(0,3).map(q=>`<li>${q}</li>`).join("")}</ol>`)}
+  </div><div class="card p0 links" style="margin-top:16px">
+  <a class="row" href="https://github.com/Lpx096/python-learning" target="_blank" rel="noopener"><span class="ico">${I("git")}</span>GitHub 仓库<span class="chev">${I("chev","s")}</span></a>
+  <a class="row" href="https://search.bilibili.com/all?keyword=%E5%B0%9A%E7%A1%85%E8%B0%B7Python" target="_blank" rel="noopener"><span class="ico">${I("play")}</span>B站 · 尚硅谷课程<span class="chev">${I("chev","s")}</span></a>
+  <a class="row" href="https://www.zhipin.com/web/geek/job?query=%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91&city=101280600" target="_blank" rel="noopener"><span class="ico">${I("bag")}</span>BOSS直聘 · 深圳岗位行情<span class="chev">${I("chev","s")}</span></a></div>`;
+ return `<div class="ph"><div class="cap">${dt.getMonth()+1}月${dt.getDate()}日 星期${WD[dt.getDay()]}</div><h1>今日</h1></div>
+ <div class="cols"><div class="stack">${main}</div><div class="stack side">${side}</div></div>${more}`};
+PG.progress=()=>{const n=doneN();return `<div class="ph"><div class="cap">让数据当主编，不让心情当主编</div><h1>进度</h1></div>
+ <div class="stats"><div class="stat"><span>已完成</span><b>${n}<small>/84</small></b></div><div class="stat"><span>连续打卡</span><b>${streak()}<small>天</small></b></div><div class="stat"><span>最长连续</span><b>${best()}<small>天</small></b></div><div class="stat"><span>预计完工</span><b style="font-size:22px;line-height:34px">${eta()}</b></div></div>
+ <div class="cols" style="margin-top:16px"><div class="stack">
+ <div class="card"><div class="ch">84 天<span class="rt">点击查看当天</span></div><div class="heat">${PLAN.map(d=>`<i class="${S.done[d.d]?"d":""} ${GATES[d.d]?"g":""} ${nextUndone(1)[0]===d.d?"t":""}" data-open="${d.d}" title="第${d.d}天 ${esc(d.t)}">${d.d}</i>`).join("")}</div>
+ <div class="lg"><span><i style="background:var(--ac)"></i>已完成</span><span><i style="box-shadow:inset 0 0 0 2px var(--ac);background:none"></i>下一天</span><span><i style="box-shadow:inset 0 0 0 2px var(--dg);background:none"></i>关卡日</span></div></div>
+ <div class="card"><div class="ch">阶段</div>${STAGES.map(s=>{let k=0;const L=s.b-s.a+1;for(let i=s.a;i<=s.b;i++)if(S.done[i])k++;const g=GATES[s.a]||(s.a<=49&&s.b>=49);return `<div class="sb"><div class="h"><span class="rg">${s.a===s.b?s.a:s.a+"–"+s.b}</span><span style="font-weight:500">${s.t}</span>${g?'<span class="chip d" style="padding:1px 8px">关卡</span>':''}<span class="r">${k}/${L}</span></div><div style="padding-left:52px"><div class="lin"><i data-w="${k/L*100}%"></i></div></div><div class="m">${s.s} · 验收：${s.v}</div></div>`}).join("")}</div></div>
+ <div class="stack side"><div class="card" style="display:flex;flex-direction:column;align-items:center;gap:16px">${ring(n,160)}<div style="width:100%">${[["Python 基础",1,35],["大模型 + RAG",36,59],["Agent",60,68],["部署 + 求职",69,84]].map(([t,a,b])=>{let k=0;for(let i=a;i<=b;i++)if(S.done[i])k++;return `<div class="sb" style="padding:10px 0"><div class="h" style="margin-bottom:6px"><span>${t}</span><span class="r">${k}/${b-a+1}</span></div><div class="lin" style="height:4px"><i data-w="${k/(b-a+1)*100}%"></i></div></div>`}).join("")}</div></div>
+ <div class="card"><div class="ch">止损关卡</div>
+  <div class="gb ${S.done[35]?"ok":""}"><span class="ic">${I(S.done[35]?"check":"alert","s")}</span><div><b>关卡1 · 第35天</b><p>Python毕业测验（对80%）不过 → 停下诊断</p></div></div>
+  <div class="gb ${S.done[49]?"ok":""}"><span class="ic">${I(S.done[49]?"check":"alert","s")}</span><div><b>关卡2 · 第49天</b><p>RAG最小闭环跑不通 → 停下诊断</p></div></div>
+  <div class="gb"><span class="ic">${I("alert","s")}</span><div><b>关卡3 · 出发前</b><p>远程投50家零面试 → 原地修简历作品集再南下</p></div></div></div>
+ ${Object.keys(S.reviews||{}).length?`<div class="card"><div class="ch">周复盘记录</div>${Object.keys(S.reviews).sort().reverse().map(k=>{const r=S.reviews[k];return `<div class="li"><b class="sm">${k}</b><div class="sm t2">完成度：${esc(r.a||"—")}<br>卡点：${esc(r.b||"—")}<br>下周调整：${esc(r.c||"—")}</div></div>`}).join("")}</div>`:""}<div class="card"><div class="ch">近 14 天习惯</div><div class="bars">${Array.from({length:14},(_,i)=>{const d=new Date(T+"T00:00:00");d.setDate(d.getDate()-13+i);const k=ds(d),hb=S.habits[k]||{},c=HABITS.filter(x=>hb[x.id]).length;return `<div title="${k}：${c}/${HABITS.length}"><i class="${c?"":"z"}" data-h2="${c?c/HABITS.length*100:6}%"></i><span>${d.getDate()}</span></div>`}).join("")}</div></div></div></div>`};
+let filt=-1,q="";
+PG.plan=()=>`<div class="ph"><div class="cap">日均 1.5 个计划日 · 每 7 天一个复盘缓冲日 · 预计 ${eta()} 完成</div><h1>84 天计划</h1></div>
+ <div style="position:relative;margin-bottom:12px"><span style="position:absolute;left:14px;top:13px;color:var(--tx3)">${I("search","s")}</span><input type="search" id="q" style="padding-left:40px" placeholder="搜索 RAG、记账本、Docker…" value="${esc(q)}"></div>
+ <div class="seg"><button class="${filt<0?"on":""}" data-f="-1">全部</button>${STAGES.map((s,i)=>`<button class="${filt===i?"on":""}" data-f="${i}">${s.t}</button>`).join("")}</div>
+ <div class="card p0" id="plist"></div>`;
+function planList(){const L=PLAN.filter(d=>{if(filt>=0){const s=STAGES[filt];if(d.d<s.a||d.d>s.b)return false}return !q||JSON.stringify(d).includes(q)});
+ $("#plist").innerHTML=L.length?L.map(d=>`<div class="pr ${S.done[d.d]?"d":""} ${GATES[d.d]?"g":""}" data-open="${d.d}"><div class="n">${S.done[d.d]?I("check","s"):d.d}</div><div style="min-width:0;flex:1"><div class="t">${esc(d.t)}</div><div class="s">${esc(d.night)}</div></div><span class="chev">${I("chev","s")}</span></div>`).join(""):'<div class="row t2">没有匹配的计划日</div>'}
+PG.timeline=()=>{const nowI=TL.findIndex(t=>t.k>=T);return `<div class="ph"><div class="cap">点击切换完成状态</div><h1>时间线</h1></div>
+ <div class="cols"><div class="card p0">${TL.map((t,i)=>`<div class="tli ${S.tl[i]?"ok":""} ${i===nowI?"now":""}" data-tl="${i}"><span class="cb"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><div style="flex:1"><div class="d">${t.d}${i===nowI?" · 当前":""}</div><div class="x">${t.t}</div></div>${t.m?'<span class="chip d" style="align-self:center">必办</span>':''}</div>`).join("")}</div>
+ <div class="stack side"><div class="card"><div class="ch">目标体系</div><table class="t"><tr><td>短期</td><td>全职学完 Python+AI 应用全套，两个项目上线<div class="t3">2026.10 – 12</div></td></tr><tr><td>中期</td><td>深圳 AI 应用开发岗入职，月薪 15–25K<div class="t3">2027 上半年</div></td></tr><tr><td>长期</td><td>深耕 Agent / 具身智能，年薪 30–50 万<div class="t3">2028 – 2032</div></td></tr><tr><td>远期</td><td>指数基金定投 + 创业探针<div class="t3">30 岁后</div></td></tr></table><div class="xs t2" style="margin-top:8px">35 岁前实现「工作选择权自由」。主业是 AI 工程师，不是 AI 副业。</div></div>
+ <div class="card"><div class="ch">副业 · 已推迟<span class="chip w" style="margin-left:auto">冻结</span></div><div class="redline" style="background:var(--wns)"><b style="color:var(--wn)">拿到 offer 前不做副业。</b>第59天后如状态好，最多每天 0.5 小时试水，且不能挤占学习和睡眠。</div><ul class="bl"><li>抖音 AI 无人口播（工业/机械科普）· 推迟到 offer 后（或第59天后 ≤0.5h/天）</li><li>闲鱼接单（简历优化/AI服务）· 同上</li><li>技术小单（程序员客栈/码市）· 入职后再说</li><li class="bad">不做：外卖快递日结、游戏代练、卖课带徒、转行 vlog</ul></div></div></div>`};
+PG.rules=()=>`<div class="ph"><div class="cap">每次重大选择前重读</div><h1>原则</h1></div>
+ <div class="cols"><div class="card"><div class="ch">十条决策原则</div><ol class="ol">${PRIN.map(p=>`<li>${p}</li>`).join("")}</ol></div>
+ <div class="stack side"><div class="card"><div class="ch">资金红线</div><div class="redline"><b>深圳存款只够 2 个月且无 offer</b> → 立即降级接非AI的IT岗（实施/运维/技术支持 8–12K），骑驴找马</div>
+ <ul class="bl"><li>辞职前：存款 ÷ 每月最低开销 ≥ 4 个月</li><li>医保不断缴：空档期按灵活就业自己缴</li><li>预算：深圳启动资金 1.2 万 + 应急储备 1.1 万</li><li class="bad"><span class="dgt">绝不碰</span>：培训贷、炒币合约、个股、任何「内部消息」</li></ul></div>
+ <div class="card"><div class="ch">求职降级预案</div><table class="t"><tr><td>理想</td><td>AI应用开发（RAG/Agent），应届 15–25K，深圳</td></tr><tr><td>可接受</td><td>AI公司实习 / 外包 / 小厂（先上船）</td></tr><tr><td>降级</td><td>实施/运维/技术支持类IT岗（8–12K）</td></tr><tr><td>保底</td><td>一线城市任何能自负盈亏的岗位——城市不降，<span class="dgt">绝不回锦州</span></td></tr></table></div>
+ <div class="card"><div class="ch">数据可信度提醒<span class="chip w" style="margin-left:auto">未核实</span></div><ul class="bl">${UNVERIFIED.map(x=>`<li class="bad">${x}</li>`).join("")}</ul><div class="xs t2" style="margin-top:8px">决策以自己实测数据为准（原则9：重要判断交叉验证）。</div></div>
+ <div class="card"><div class="ch">动摇时重读：为什么离开</div><ul class="bl">${WHY.map(w=>`<li>${w}</li>`).join("")}</ul><div class="xs t2" style="margin-top:8px">不离开的理由：无。</div></div></div></div>`;
+PG.data=()=>`<div class="ph"><div class="cap">所有记录只保存在本机浏览器</div><h1>数据</h1></div>
+ <div class="g2"><div class="card"><div class="ch">备份</div><button class="btn pri" id="ex">${I("down","s")}导出 JSON 备份</button><button class="btn" id="cp">${I("copy","s")}复制到剪贴板</button><div class="xs t3" style="margin-top:12px">包含计划日、习惯、时间线、笔记与设置</div></div>
+ <div class="card"><div class="ch">恢复</div><label class="btn" style="cursor:pointer">${I("up","s")}选择备份文件<input type="file" id="fi" accept=".json,application/json" hidden></label><textarea id="ta" style="margin-top:8px;min-height:72px" placeholder="或粘贴 JSON"></textarea><button class="btn" id="im" style="margin-top:8px">导入粘贴内容</button></div>
+ <div class="card"><div class="ch">安装到主屏幕</div><button class="btn pri" id="inst">${I("phone","s")}安装 App</button><div class="xs t2" style="margin-top:12px;line-height:1.8">iPhone：Safari 分享 →「添加到主屏幕」<br>安卓 / 电脑：Chrome、Edge 地址栏安装图标 · 安装后可离线使用</div></div>
+ <div class="card"><div class="ch">其它</div><button class="btn" id="hreset">${S.healthOk?"重新显示就医提醒":"标记已就医"}</button><button class="btn dg" id="rs">重置全部数据</button><div class="xs t3" style="margin-top:12px">已完成 ${doneN()} 天 · 笔记 ${Object.keys(S.notes).filter(k=>S.notes[k]).length} 篇 · v3</div></div></div>`;
+const TABS=[["today","今日","today"],["progress","进度","chart"],["plan","计划","list"],["timeline","时间线","flag"],["rules","原则","shield"],["data","数据","db"]];
+let cur=(location.hash||"#today").slice(1);
+function render(){if(!PG[cur])cur="today";T=TOV||ds(new Date());
+ $("#tabs").innerHTML=TABS.map(([k,v])=>`<a href="#${k}" class="${k===cur?"on":""}">${v}</a>`).join("");
+ $("#bnav").innerHTML=TABS.map(([k,v,i])=>`<a href="#${k}" class="${k===cur?"on":""}">${I(i)}${v}</a>`).join("");
+ $("#app").innerHTML=`<div class="page">${PG[cur]()}</div>`;if(cur==="plan")planList();animateIn()}
+function tick(){const n=new Date();$("#clk").textContent=pad(n.getHours())+":"+pad(n.getMinutes())}
+function imp(txt){try{const o=JSON.parse(txt);if(!o||typeof o.done!=="object")throw 0;S=Object.assign(def(),o);save();applyTheme();toast("导入成功");render()}catch(e){toast("JSON 格式不正确")}}
+function applyTheme(){const t=S.theme||"auto";document.documentElement.dataset.theme=t;const b=$("#theme");if(b)b.innerHTML=I({auto:"auto",light:"sun",dark:"moon"}[t])}
+document.addEventListener("click",e=>{if(e.target.id==="modal"){closeModal();return}
+ const t=e.target.closest("[data-open],[data-close],[data-tog],[data-tl],[data-f],#dk,#hok,#ex,#cp,#im,#rs,#hreset,#inst,#theme");if(!t)return;
+ if(t.dataset.open){openDay(+t.dataset.open);return}
+ if(t.hasAttribute("data-close")){closeModal();return}
+ if(t.dataset.tog){const n=+t.dataset.tog;if(S.done[n])delete S.done[n];else{S.done[n]=T;celebrate("第 "+n+" 天完成","继续保持")}save();openDay(n);render();return}
+ if(t.dataset.tl){const i=t.dataset.tl;S.tl[i]=!S.tl[i];save();render();return}
+ if(t.dataset.f){filt=+t.dataset.f;render();return}
+ switch(t.id){
+ case"dk":{const ph=phase(),sc=sched(T),nu=nextUndone(ph==="full"&&sc&&sc.length?Math.max(1,sc.length):2);nu.forEach(n=>S.done[n]=T);save();const n=doneN();celebrate("打卡成功",n===35?"关卡1到了，毕业测验加油":n>=84?"84 天全部完成":"已完成 "+n+" / 84 天 · 连续 "+streak()+" 天");render();break}
+ case"hok":S.healthOk=true;save();toast("身体第一，做得好");render();break;
+ case"hreset":S.healthOk=!S.healthOk;save();render();break;
+ case"theme":S.theme={auto:"light",light:"dark",dark:"auto"}[S.theme||"auto"];save();applyTheme();toast({auto:"跟随系统",light:"浅色模式",dark:"深色模式"}[S.theme]);break;
+ case"ex":{const b=new Blob([JSON.stringify(S,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="上岸计划备份-"+T+".json";document.body.appendChild(a);a.click();a.remove();toast("已导出");break}
+ case"cp":{const s=JSON.stringify(S);(navigator.clipboard?navigator.clipboard.writeText(s):Promise.reject()).then(()=>toast("已复制"),()=>{$("#ta").value=s;toast("已放入下方文本框")});break}
+ case"im":imp($("#ta").value);break;
+ case"rs":if(confirm("确定重置？所有记录清空（第1、2天保留）")){S=def();save();render();toast("已重置")}break;
+ case"inst":if(window._dip){window._dip.prompt();window._dip=null}else toast(location.protocol==="file:"?"本地文件版不能安装，请用网页版":"请用浏览器菜单「添加到主屏幕」");break}});
+document.addEventListener("change",e=>{const t=e.target;
+ if(t.dataset.hb){(S.habits[T]=S.habits[T]||{})[t.dataset.hb]=t.checked;save();const c=HABITS.filter(h=>S.habits[T][h.id]).length;$("#hc").textContent=c;$("#hbar").style.width=c/HABITS.length*100+"%";if(c===HABITS.length&&t.checked)celebrate("习惯全部完成","今天的你很稳")}
+ if(t.id==="fi"&&t.files[0])t.files[0].text().then(imp)});
+document.addEventListener("input",e=>{if(e.target.dataset&&e.target.dataset.rv){S.reviews=S.reviews||{};(S.reviews[T]=S.reviews[T]||{})[e.target.dataset.rv]=e.target.value;save()}if(e.target.id==="note"){S.notes[T]=e.target.value;save()}if(e.target.id==="q"){q=e.target.value.trim();planList()}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+addEventListener("scroll",()=>$("#top").classList.toggle("sc",scrollY>4),{passive:true});
+addEventListener("hashchange",()=>{cur=location.hash.slice(1);closeModal();render();scrollTo({top:0})});
+addEventListener("beforeinstallprompt",e=>{e.preventDefault();window._dip=e});
+applyTheme();save();render();tick();setInterval(tick,10000);
+if("serviceWorker"in navigator&&location.protocol.startsWith("http"))navigator.serviceWorker.register("sw.js").catch(e=>console.warn(e));
+</script></body></html>
