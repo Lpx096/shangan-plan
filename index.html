@@ -183,6 +183,7 @@ textarea.code{font-family:var(--mono);font-size:13px;min-height:110px}
 .score{display:flex;align-items:center;gap:20px}.score .big{white-space:nowrap;flex:none;font-size:44px;font-weight:700;letter-spacing:-.02em;line-height:1}.score .big small{font-size:18px;color:var(--tx3);font-weight:500}
 .qcta{background:linear-gradient(135deg,var(--acs),transparent);box-shadow:var(--sh),inset 0 0 0 1.5px color-mix(in srgb,var(--ac) 35%,transparent)}
 .loading{display:flex;flex-direction:column;align-items:center;gap:12px;padding:40px 0;color:var(--tx2);font-size:14px}.spin{width:28px;height:28px;border:3px solid var(--sf2);border-top-color:var(--ac);border-radius:50%;animation:sp 0.8s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
+details.think{margin:-2px 0 8px;font-size:13px;color:var(--tx2)}details.think summary{list-style:none;display:inline-flex;align-items:center;gap:6px;cursor:pointer;padding:3px 10px;border-radius:99px;background:var(--sf2);font-size:12.5px}details.think summary::-webkit-details-marker{display:none}details.think summary .chev svg{width:12px;height:12px;transition:transform .2s}details.think[open] summary .chev svg{transform:rotate(90deg)}details.think .tb{white-space:pre-wrap;margin-top:8px;padding:8px 12px;border-left:2px solid var(--line);color:var(--tx3);font-size:13px;line-height:1.6;max-height:240px;overflow:auto}
 .wq{padding:16px 20px;border-top:1px solid var(--line)}.wq:first-child{border-top:0}.wq .meta{font-size:12px;color:var(--tx3);margin-bottom:4px;display:flex;gap:8px;align-items:center}.wq .acts{display:flex;gap:8px;margin-top:10px}
 
 footer{margin-top:40px;font-size:12px;color:var(--tx3);line-height:1.8;text-align:center}
@@ -403,25 +404,42 @@ PG.data=()=>`<div class="ph"><div class="cap">所有记录只保存在本机浏�
  <div class="card"><div class="ch">安装到主屏幕</div><button class="btn pri" id="inst">${I("phone","s")}安装 App</button><div class="xs t2" style="margin-top:12px;line-height:1.8">iPhone：Safari 分享 →「添加到主屏幕」<br>安卓 / 电脑：Chrome、Edge 地址栏安装图标 · 安装后可离线使用</div></div>
  <div class="card"><div class="ch">其它</div><button class="btn" id="hreset">${S.healthOk?"重新显示就医提醒":"标记已就医"}</button><button class="btn dg" id="rs">重置全部数据</button><div class="xs t3" style="margin-top:12px">已完成 ${doneN()} 天 · 笔记 ${Object.keys(S.notes).filter(k=>S.notes[k]).length} 篇 · v3</div></div></div>`;
 /* ================= AI ================= */
-const PROV={deepseek:{n:"DeepSeek",url:"https://api.deepseek.com/chat/completions",models:["deepseek-chat"]},kimi:{n:"Kimi / Moonshot",url:"https://api.moonshot.cn/v1/chat/completions",models:["moonshot-v1-8k","kimi-latest"]},custom:{n:"自定义（OpenAI 兼容）",url:"",models:[]}};
+const PROV={deepseek:{n:"DeepSeek",url:"https://api.deepseek.com/chat/completions",models:["deepseek-chat"]},kimi:{n:"Kimi / Moonshot",url:"https://api.moonshot.cn/v1/chat/completions",models:["kimi-k2.6","kimi-k2.7-code"]},custom:{n:"自定义（OpenAI 兼容）",url:"",models:[]}};
 const KEYK="shangan_ai_key";
-const aiCfg=()=>Object.assign({provider:"deepseek",model:"deepseek-chat",base:"",cmodel:""},S.ai||{});
+const aiCfg=()=>{const c=Object.assign({provider:"deepseek",model:"deepseek-chat",base:"",cmodel:"",mlist:{}},S.ai||{});if(c.provider==="kimi"&&/^moonshot-v1|^kimi-latest$/.test(c.model||""))c.model="kimi-k2.6";return c};
+const modelOpts=p=>{const c=aiCfg();return (c.mlist&&c.mlist[p]&&c.mlist[p].length)?c.mlist[p]:PROV[p].models};
+const isReasoning=m=>/kimi-k2|reason|thinking|(^|[-/])r1\b|^o[1-9]/i.test(m||"");
+function aiBase(){const e=aiEndpoint();return e.replace(/\/chat\/completions$/,"")}
+async function fetchModels(){const key=aiKey(),b=aiBase();if(!key||!b)throw new Error("先填写 API Key"+(aiCfg().provider==="custom"?"和 Base URL":""));
+ let r;try{r=await fetch(b+"/models",{headers:{"Authorization":"Bearer "+key}})}catch(e){throw new Error("网络错误或被 CORS 拦截："+e.message)}
+ if(!r.ok)throw new Error("HTTP "+r.status+(r.status===401?"：API Key 无效":""));const j=await r.json();return (j.data||j.models||[]).map(x=>x.id||x.name||x).filter(x=>typeof x==="string").sort()}
 const aiKey=()=>{try{return localStorage.getItem(KEYK)||""}catch(e){return""}};
 function aiEndpoint(){const c=aiCfg();if(c.provider==="custom"){let b=(c.base||"").trim().replace(/\/+$/,"");if(!b)return"";return /chat\/completions$/.test(b)?b:b+"/chat/completions"}return PROV[c.provider].url}
 const aiModel=()=>{const c=aiCfg();return c.provider==="custom"?(c.cmodel||"").trim():c.model};
 const aiReady=()=>!!(aiKey()&&aiEndpoint()&&aiModel());
 async function aiCall(messages,opt={}){
- const url=aiEndpoint(),key=aiKey();if(!url||!key)throw new Error("请先在「设置」里填写 API Key");
- const body={model:aiModel(),messages,temperature:opt.temperature??0.7,stream:!!opt.onDelta};if(opt.json)body.response_format={type:"json_object"};if(opt.max_tokens)body.max_tokens=opt.max_tokens;
- let r;try{r=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+key},body:JSON.stringify(body),signal:opt.signal})}catch(e){if(e.name==="AbortError")throw e;throw new Error("网络错误或被浏览器 CORS 拦截："+e.message)}
- if(!r.ok){let t="";try{t=(await r.json()).error?.message||""}catch(e){}throw new Error(`HTTP ${r.status}${r.status===401?"：API Key 无效":r.status===402?"：余额不足":""} ${t}`)}
+ const url=aiEndpoint(),key=aiKey(),model=aiModel();if(!url||!key)throw new Error("请先在「设置」里填写 API Key");
+ const body={model,messages,stream:!!opt.onDelta};if(!isReasoning(model)&&opt.temperature!==undefined)body.temperature=opt.temperature;else if(!isReasoning(model))body.temperature=0.7;
+ if(opt.json&&!isReasoning(model))body.response_format={type:"json_object"};if(opt.max_tokens&&!isReasoning(model))body.max_tokens=opt.max_tokens;
+ const ctl=new AbortController(),to=setTimeout(()=>ctl.abort("timeout"),opt.timeout||120000);if(opt.signal)opt.signal.addEventListener("abort",()=>ctl.abort("user"));
+ const go=b=>fetch(url,{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+key},body:JSON.stringify(b),signal:ctl.signal});
+ let r;try{r=await go(body);
+  if(r.status===400&&(body.temperature!==undefined||body.response_format||body.max_tokens)){let t="";try{t=JSON.stringify(await r.clone().json())}catch(e){}if(/temperature|response_format|max_tokens|unsupported|invalid/i.test(t)){delete body.temperature;delete body.response_format;delete body.max_tokens;r=await go(body)}}
+ }catch(e){clearTimeout(to);if(ctl.signal.reason==="timeout")throw new Error("请求超时（推理模型较慢，可重试）");if(e.name==="AbortError"){const x=new Error("aborted");x.name="AbortError";throw x}throw new Error("网络错误或被浏览器 CORS 拦截："+e.message)}
+ if(!r.ok){clearTimeout(to);let t="";try{t=(await r.json()).error?.message||""}catch(e){}throw new Error(`HTTP ${r.status}${r.status===401?"：API Key 无效":r.status===402?"：余额不足":r.status===404?"：模型「"+model+"」不存在或无权限，请点「获取模型列表」选择可用模型":r.status===429?"：请求太频繁或额度用尽":""} ${t}`)}
+ try{
  if(!opt.onDelta){const j=await r.json();return j.choices?.[0]?.message?.content||""}
- const rd=r.body.getReader(),dec=new TextDecoder();let buf="",full="";
+ const rd=r.body.getReader(),dec=new TextDecoder();let buf="",full="",think="";
  for(;;){const{done,value}=await rd.read();if(done)break;buf+=dec.decode(value,{stream:true});let i;
   while((i=buf.indexOf("\n"))>=0){const line=buf.slice(0,i).trim();buf=buf.slice(i+1);if(!line.startsWith("data:"))continue;const d=line.slice(5).trim();if(d==="[DONE]")return full;
-   try{const c=JSON.parse(d).choices?.[0]?.delta?.content;if(c){full+=c;opt.onDelta(full)}}catch(e){}}}
- return full}
-function parseJSON(t){t=String(t).trim().replace(/^```(?:json)?\s*/i,"").replace(/```\s*$/,"");try{return JSON.parse(t)}catch(e){const a=t.indexOf("{"),b=t.lastIndexOf("}");if(a>=0&&b>a)return JSON.parse(t.slice(a,b+1));throw new Error("AI 返回的不是合法 JSON")}}
+   try{const dl=JSON.parse(d).choices?.[0]?.delta||{};if(dl.reasoning_content){think+=dl.reasoning_content;opt.onReason&&opt.onReason(think)}if(dl.content){full+=dl.content;opt.onDelta(full)}}catch(e){}}}
+ return full}catch(e){if(ctl.signal.reason==="timeout")throw new Error("请求超时（推理模型较慢，可重试）");if(e.name==="AbortError"){const x=new Error("aborted");x.name="AbortError";throw x}throw e}finally{clearTimeout(to)}}
+function parseJSON(t){t=String(t||"").trim().replace(/<think>[\s\S]*?<\/think>/g,"");
+ const tryP=x=>{try{return JSON.parse(x)}catch(e){return undefined}};let v=tryP(t);if(v!==undefined)return v;
+ const f=t.match(/^\s*```(?:json)?\s*\n?([\s\S]*)```\s*$/i);if(f&&(v=tryP(f[1].trim()))!==undefined)return v;
+ for(let a=t.indexOf("{");a>=0;a=t.indexOf("{",a+1)){let dep=0,q=false,e2=false;for(let i=a;i<t.length;i++){const c=t[i];if(q){if(e2)e2=false;else if(c==="\\")e2=true;else if(c==='"')q=false;continue}
+  if(c==='"')q=true;else if(c==="{")dep++;else if(c==="}"&&--dep===0){v=tryP(t.slice(a,i+1));if(v!==undefined&&typeof v==="object")return v;break}}}
+ throw new Error("AI 返回的不是合法 JSON")}
 /* ---- markdown ---- */
 const PYK=/\b(def|class|return|if|elif|else|for|while|in|not|and|or|is|import|from|as|with|try|except|finally|raise|lambda|yield|pass|break|continue|None|True|False|global|nonlocal|async|await|print|len|range|input|int|str|float|list|dict|set|tuple|self)\b/g;
 function hl(code,lang){let s=esc(code);if(lang&&!/^(py|python|js|javascript|ts|bash|sh|sql|json)?$/i.test(lang))return s;
@@ -458,25 +476,27 @@ const curChat=()=>{S.chats=S.chats||[];let c=S.chats.find(x=>x.id===S.curChat);i
 function newChat(){S.chats=S.chats||[];const c=S.chats.find(x=>x.id===S.curChat);if(c&&!c.msgs.length)return;const n={id:"c"+Date.now(),title:"新对话",msgs:[],t:Date.now()};S.chats.unshift(n);S.curChat=n.id;S.chats=S.chats.slice(0,50);save()}
 function chatView(){const c=curChat();const sug=["解释一下 Python 的列表推导式","我卡在第"+(nextUndone(1)[0]||84)+"天的晚上任务，给我一点提示","RAG 和微调有什么区别？","帮我出 3 道今天内容的小练习"];
  return `<div class="chathd"><span class="sm">${esc(c.title)}</span><details style="position:relative"><summary class="mini" style="list-style:none">${I("clock","s")}历史</summary><div class="card p0 hist" style="position:absolute;right:0;top:40px;width:280px;z-index:20;max-height:320px;overflow:auto">${(S.chats||[]).filter(x=>x.msgs.length).map(x=>`<div class="row" data-chat="${x.id}"><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(x.title)}</span><span class="del" data-delchat="${x.id}">${I("x","s")}</span></div>`).join("")||'<div class="row t3">暂无历史</div>'}</div></details><button class="mini" id="newchat">${I("plus","s")}新对话</button></div>
- <div class="chat"><div class="msgs" id="msgs">${c.msgs.length?c.msgs.map(m=>m.role==="user"?`<div class="msg u">${esc(m.content)}</div>`:`<div class="msg a md ${m.err?"err":""}">${md(m.content)}</div>`).join(""):`<div class="empty"><div class="bigic">${I("spark")}</div><b>学习导师</b>知道你的84天计划和进度。卡住超过20分钟再来问，我只给提示。</div><div class="sugg">${sug.map(s=>`<button data-sug="${esc(s)}">${esc(s)}</button>`).join("")}</div>`}</div>
+ <div class="chat"><div class="msgs" id="msgs">${c.msgs.length?c.msgs.map(m=>m.role==="user"?`<div class="msg u">${esc(m.content)}</div>`:`<div class="msg a md ${m.err?"err":""}">${thinkBlk(m.r,false,true)}${md(m.content)}</div>`).join(""):`<div class="empty"><div class="bigic">${I("spark")}</div><b>学习导师</b>知道你的84天计划和进度。卡住超过20分钟再来问，我只给提示。</div><div class="sugg">${sug.map(s=>`<button data-sug="${esc(s)}">${esc(s)}</button>`).join("")}</div>`}</div>
  <div class="composer"><textarea id="cin" rows="1" placeholder="${aiReady()?"问点什么…":"先到「设置」填写 API Key"}"></textarea><button class="send ${aiCtl?"stop":""}" id="csend" aria-label="发送">${I(aiCtl?"stopic":"send","s")}</button></div></div>`}
 async function sendChat(text){text=(text||"").trim();if(!text||aiCtl)return;if(!aiReady()){aiTab="set";render();toast("请先填写 API Key");return}
  const c=curChat();c.msgs.push({role:"user",content:text});if(c.title==="新对话")c.title=text.slice(0,24);c.t=Date.now();const am={role:"assistant",content:""};c.msgs.push(am);save();render();
  const box=$("#msgs");const el=box.lastElementChild;el.classList.add("cursor");const scroll=()=>window.scrollTo({top:document.body.scrollHeight});scroll();
  aiCtl=new AbortController();updSend();
  try{const hist=c.msgs.slice(0,-1).filter(m=>!m.err).slice(-16).map(m=>({role:m.role,content:m.content}));
-  await aiCall([{role:"system",content:sysPrompt()},...hist],{signal:aiCtl.signal,onDelta:t=>{am.content=t;el.innerHTML=md(t);scroll()}});
+  const paint=()=>{const op=!!el.querySelector('details.think[open]');el.innerHTML=thinkBlk(am.r,op,!!am.content)+md(am.content);};
+  await aiCall([{role:"system",content:sysPrompt()},...hist],{signal:aiCtl.signal,timeout:300000,onReason:t=>{am.r=t;paint()},onDelta:t=>{am.content=t;paint();scroll()}});
   if(!am.content)am.content="（空回复）"}catch(e){if(e.name==="AbortError"){am.content+=(am.content?"\n\n":"")+"_（已停止）_"}else{am.content="出错了："+e.message;am.err=1}}
  aiCtl=null;save();if(cur==="ai"&&aiTab==="chat"){render();scroll()}}
+function thinkBlk(r,open,done){if(!r)return"";return `<details class="think"${open?" open":""}><summary>${I("spark","s")}${done?"已思考":"思考中…"}<span class="chev">${I("chev","s")}</span></summary><div class="tb">${esc(r)}</div></details>`}
 function updSend(){const b=$("#csend");if(b){b.className="send"+(aiCtl?" stop":"");b.innerHTML=I(aiCtl?"stopic":"send","s")}}
 /* ---- settings ---- */
 function setView(){const c=aiCfg(),p=c.provider;return `<div class="card"><div class="ch">模型服务</div>
  <div class="fld"><label>服务商</label><select class="inp" id="aprov">${Object.entries(PROV).map(([k,v])=>`<option value="${k}" ${k===p?"selected":""}>${v.n}</option>`).join("")}</select></div>
- ${p==="custom"?`<div class="fld"><label>Base URL</label><input class="inp" id="abase" placeholder="https://xxx/v1" value="${esc(c.base)}"><div class="xs t3">OpenAI 兼容接口，会自动补 /chat/completions；服务端须允许浏览器跨域（CORS）</div></div><div class="fld"><label>模型名</label><input class="inp" id="acmodel" placeholder="如 qwen-plus" value="${esc(c.cmodel)}"></div>`
- :`<div class="fld"><label>模型</label><select class="inp" id="amodel">${PROV[p].models.map(m=>`<option ${m===c.model?"selected":""}>${m}</option>`).join("")}</select><div class="xs t3">${esc(PROV[p].url)} · 已验证支持浏览器直连（CORS）</div></div>`}
+ ${p==="custom"?`<div class="fld"><label>Base URL</label><input class="inp" id="abase" placeholder="https://xxx/v1" value="${esc(c.base)}"><div class="xs t3">OpenAI 兼容接口，会自动补 /chat/completions；服务端须允许浏览器跨域（CORS）</div></div><div class="fld"><label>模型名</label><div style="display:flex;gap:8px"><input class="inp" id="acmodel" list="cmlist" placeholder="如 qwen-plus" value="${esc(c.cmodel)}"><button class="mini" id="afetch" style="height:46px">获取模型列表</button></div><datalist id="cmlist">${modelOpts("custom").map(m=>`<option value="${esc(m)}">`).join("")}</datalist></div>`
+ :`<div class="fld"><label>模型</label><div style="display:flex;gap:8px"><select class="inp" id="amodel">${[...new Set([...modelOpts(p),c.model])].filter(Boolean).map(m=>`<option ${m===c.model?"selected":""}>${esc(m)}</option>`).join("")}</select><button class="mini" id="afetch" style="height:46px">获取模型列表</button></div><div class="xs t3">${esc(PROV[p].url)} · 已验证支持浏览器直连（CORS）</div></div>`}
  <div class="fld"><label>API Key</label><input class="inp" id="akey" type="password" autocomplete="off" placeholder="sk-…" value="${esc(aiKey())}"></div>
  <div class="okline">${I("shield","s")}<div>Key 只保存在<b>这台设备的浏览器</b>（localStorage），请求从浏览器直接发给服务商，不经过任何服务器、不写进代码，也<b>不会</b>包含在导出备份里。换设备需要重新填写。</div></div>
- <div style="display:flex;gap:8px;margin-top:16px"><button class="btn pri" id="asave">保存</button><button class="btn" id="atest" style="margin-top:0">测试连接</button></div><div id="atestr" class="sm" style="margin-top:12px"></div>
+ <div style="display:flex;gap:8px;margin-top:16px"><button class="btn pri" id="asave">保存</button><button class="btn" id="atest" style="margin-top:0">测试连接</button></div><div class="xs t3" style="margin-top:12px">推理模型（如 kimi-k2.6）会先输出「思考」，不传 temperature；出题较慢请耐心等待。</div><div id="atestr" class="sm" style="margin-top:12px"></div>
  ${aiKey()?`<button class="btn dg" id="aclear" style="margin-top:8px">清除 Key</button>`:""}</div>`}
 function readSet(){const p=$("#aprov").value;S.ai=Object.assign(aiCfg(),{provider:p});if($("#amodel"))S.ai.model=$("#amodel").value;if($("#abase"))S.ai.base=$("#abase").value;if($("#acmodel"))S.ai.cmodel=$("#acmodel").value;try{localStorage.setItem(KEYK,$("#akey").value.trim())}catch(e){}save()}
 /* ---- quiz ---- */
@@ -485,14 +505,14 @@ async function startQuiz(){if(!aiReady()){aiTab="set";render();toast("请先填�
  const days=recentDays();if(!days.length){toast("还没有完成的计划日");return}const sp=quizSpec(days);
  quiz={state:"loading",days,sp,qs:[],ans:{}};aiTab="quiz";render();
  const ctx=days.map(x=>{const d=P(x);return `第${x}天《${d.t}》课程：${d.lessons}；实操：${d.course_practice}；晚上任务：${d.night}；验收：${d.check}`}).join("\n");
- try{const t=await aiCall([{role:"system",content:"你是严格的 Python/AI 课程出题老师。只输出 JSON，不要任何其它文字。"},{role:"user",content:`生成测验。根据学生今天学的内容：\n${ctx}\n出 ${sp.n} 道题，混合题型：choice(单选,4个选项) / fill(填空) / output(阅读代码写出输出) / code(小编程题，几行代码)。难度贴合当天内容，覆盖验收点。\n严格输出 JSON：{"questions":[{"type":"choice|fill|output|code","q":"题干，代码用\`\`\`python包裹","options":["A. ..","B. ..","C. ..","D. .."],"answer":"choice填选项字母；其它填标准答案","explain":"简短解析"}]}`}],{json:true,temperature:0.5});
+ try{const t=await aiCall([{role:"system",content:"你是严格的 Python/AI 课程出题老师。只输出 JSON，不要任何其它文字。"},{role:"user",content:`生成测验。根据学生今天学的内容：\n${ctx}\n出 ${sp.n} 道题，混合题型：choice(单选,4个选项) / fill(填空) / output(阅读代码写出输出) / code(小编程题，几行代码)。难度贴合当天内容，覆盖验收点。\n严格输出 JSON：{"questions":[{"type":"choice|fill|output|code","q":"题干，代码用\`\`\`python包裹","options":["A. ..","B. ..","C. ..","D. .."],"answer":"choice填选项字母；其它填标准答案","explain":"简短解析"}]}`}],{json:true,temperature:0.5,timeout:240000});
   const j=parseJSON(t);const qs=(j.questions||[]).filter(q=>q&&q.q).slice(0,20);if(!qs.length)throw new Error("没有生成题目");quiz.qs=qs;quiz.state="answer"}catch(e){quiz.state="error";quiz.err=e.message}
  if(cur==="ai")render()}
 const letter=s=>String(s||"").trim().toUpperCase().charAt(0);
 async function submitQuiz(){document.querySelectorAll("[data-qa]").forEach(e=>{quiz.ans[e.dataset.qa]=e.value});document.querySelectorAll("[data-qc]:checked").forEach(e=>{quiz.ans[e.dataset.qc]=e.value});
  quiz.state="grading";render();const res=[];const open=[];
  quiz.qs.forEach((q,i)=>{const a=(quiz.ans[i]||"").trim();if(q.type==="choice"){res[i]={ok:letter(a)===letter(q.answer),fb:q.explain||""}}else if(!a){res[i]={ok:false,fb:"未作答。"+(q.explain||"")}}else open.push(i)});
- if(open.length){try{const t=await aiCall([{role:"system",content:"你是阅卷老师。只输出 JSON。对语义等价、代码可正确运行的答案判对；小的格式差异不扣分。"},{role:"user",content:`批改下列题目：\n${JSON.stringify(open.map(i=>({i,type:quiz.qs[i].type,q:quiz.qs[i].q,standard:quiz.qs[i].answer,student:quiz.ans[i]})))}\n输出 {"results":[{"i":题号,"correct":true/false,"feedback":"一两句点评，指出错因；不要给完整代码"}]}`}],{json:true,temperature:0});
+ if(open.length){try{const t=await aiCall([{role:"system",content:"你是阅卷老师。只输出 JSON。对语义等价、代码可正确运行的答案判对；小的格式差异不扣分。"},{role:"user",content:`批改下列题目：\n${JSON.stringify(open.map(i=>({i,type:quiz.qs[i].type,q:quiz.qs[i].q,standard:quiz.qs[i].answer,student:quiz.ans[i]})))}\n输出 {"results":[{"i":题号,"correct":true/false,"feedback":"一两句点评，指出错因；不要给完整代码"}]}`}],{json:true,temperature:0,timeout:240000});
    const j=parseJSON(t);(j.results||[]).forEach(r=>{res[r.i]={ok:!!r.correct,fb:(r.feedback||"")+(quiz.qs[r.i]?.explain?"\n解析："+quiz.qs[r.i].explain:"")}})}catch(e){open.forEach(i=>{const s=String(quiz.qs[i].answer).replace(/\s/g,""),a=String(quiz.ans[i]).replace(/\s/g,"");res[i]={ok:s===a,fb:"（AI 批改失败，按标准答案比对）"+(quiz.qs[i].explain||"")}})}}
  open.forEach(i=>{if(!res[i])res[i]={ok:false,fb:quiz.qs[i].explain||""}});
  quiz.res=res;quiz.score=res.filter(r=>r.ok).length;quiz.state="done";
@@ -532,7 +552,7 @@ function quizCard(){const h=new Date().getHours(),punched=Object.values(S.done).
  if(!(h>=18||punched)||phase()==="rest")return"";
  return `<div class="card qcta"><div class="ch">${I("quiz","s")}晚间测验<span class="rt">${tq?`今日 ${tq.score}/${tq.total}`:"睡前 10 分钟"}</span></div><p class="sm t2" style="margin-bottom:16px">${tq?"已经测过了，可以去错题本把错题重做一遍。":"用 5–8 道题检验今天学的内容，错题自动进错题本。"}</p><button class="btn pri" data-goquiz>${I("play","s")}${tq?"再测一次":"开始今日测验"}</button></div>`}
 function quizChart(){const Q=(S.quizzes||[]).slice(-12);if(!Q.length)return"";return `<div class="card"><div class="ch">测验成绩<span class="rt">最近 ${Q.length} 次 · 虚线 80%</span></div><div class="bars" style="position:relative">${Q.map(q=>{const p=q.score/q.total;return `<div title="${q.date} 第${q.days.join("-")}天 ${q.score}/${q.total}"><i style="height:0;${p<0.8?"background:var(--dg);":""}" data-h2="${Math.max(4,p*100)}%"></i><span>${q.date.slice(8)}</span></div>`}).join("")}<span style="position:absolute;left:0;right:0;bottom:calc(16px + 80% * (96px - 16px) / 96px * 0);border-top:1.5px dashed var(--tx3);top:${(1-0.8)*80}px"></span></div></div>`}
-document.addEventListener("click",e=>{const t=e.target.closest("[data-aitab],[data-sug],[data-chat],[data-delchat],[data-goquiz],[data-wredo],[data-wshow],[data-wok],[data-wdel],#newchat,#csend,#asave,#atest,#aclear,#qstart,#qsubmit,#qagain");if(!t)return;
+document.addEventListener("click",e=>{const t=e.target.closest("[data-aitab],[data-sug],[data-chat],[data-delchat],[data-goquiz],[data-wredo],[data-wshow],[data-wok],[data-wdel],#newchat,#csend,#asave,#atest,#afetch,#aclear,#qstart,#qsubmit,#qagain");if(!t)return;
  if(t.dataset.aitab){aiTab=t.dataset.aitab;if(cur!=="ai")location.hash="#ai";else render();return}
  if(t.dataset.sug){sendChat(t.dataset.sug);return}
  if(t.dataset.delchat){e.stopPropagation();S.chats=S.chats.filter(c=>c.id!==t.dataset.delchat);if(S.curChat===t.dataset.delchat)S.curChat=null;save();render();return}
@@ -546,11 +566,12 @@ document.addEventListener("click",e=>{const t=e.target.closest("[data-aitab],[da
  switch(t.id){case"newchat":newChat();render();break;
  case"csend":if(aiCtl){aiCtl.abort()}else sendChat($("#cin").value);break;
  case"asave":readSet();toast("已保存");render();break;
+ case"afetch":{readSet();const o=$("#atestr");o.innerHTML='<span class="t2">获取中…</span>';fetchModels().then(L=>{if(!L.length)throw new Error("列表为空");const c=aiCfg();c.mlist=Object.assign({},c.mlist,{[c.provider]:L});if(c.provider!=="custom"&&!L.includes(c.model))c.model=L[0];if(c.provider==="custom"&&!c.cmodel)c.cmodel=L[0];S.ai=c;save();render();$("#atestr").innerHTML=`<span style="color:#16a34a">✓ 找到 ${L.length} 个模型：${esc(L.slice(0,6).join("、"))}${L.length>6?"…":""}</span>`}).catch(e=>{o.innerHTML=`<span style="color:var(--dg)">✗ ${esc(e.message)}</span>`});break}
  case"aclear":try{localStorage.removeItem(KEYK)}catch(e){}toast("Key 已清除");render();break;
- case"atest":readSet();const o=$("#atestr");o.innerHTML='<span class="t2">连接中…</span>';const t0=Date.now();aiCall([{role:"user",content:"回复：ok"}],{max_tokens:5,temperature:0}).then(r=>{o.innerHTML=`<span style="color:#16a34a">✓ 连接成功（${Date.now()-t0}ms）：${esc(r.slice(0,20))}</span>`}).catch(e=>{o.innerHTML=`<span style="color:var(--dg)">✗ ${esc(e.message)}</span>`});break;
+ case"atest":readSet();const o=$("#atestr");o.innerHTML='<span class="t2">连接中…</span>';const t0=Date.now();aiCall([{role:"user",content:"回复：ok"}],{max_tokens:5,temperature:0,timeout:60000}).then(r=>{o.innerHTML=`<span style="color:#16a34a">✓ 连接成功（${Date.now()-t0}ms）：${esc(r.slice(0,20))}</span>`}).catch(e=>{o.innerHTML=`<span style="color:var(--dg)">✗ ${esc(e.message)}</span>`});break;
  case"qstart":case"qagain":quiz=null;startQuiz();break;
  case"qsubmit":submitQuiz();break}});
-document.addEventListener("change",e=>{const t=e.target;if(t.id==="aprov"){S.ai=Object.assign(aiCfg(),{provider:t.value});if(t.value!=="custom")S.ai.model=PROV[t.value].models[0];try{localStorage.setItem(KEYK,$("#akey").value.trim())}catch(e){}save();render()}
+document.addEventListener("change",e=>{const t=e.target;if(t.id==="aprov"){S.ai=Object.assign(aiCfg(),{provider:t.value});if(t.value!=="custom")S.ai.model=modelOpts(t.value)[0];try{localStorage.setItem(KEYK,$("#akey").value.trim())}catch(e){}save();render()}
  if(t.dataset.qc!==undefined&&quiz)quiz.ans[t.dataset.qc]=t.value;if(t.dataset.redo&&redo[t.dataset.redo])redo[t.dataset.redo].a=t.value});
 document.addEventListener("input",e=>{const t=e.target;if(t.dataset.qa!==undefined&&quiz)quiz.ans[t.dataset.qa]=t.value;if(t.id==="cin"){t.style.height="auto";t.style.height=Math.min(160,t.scrollHeight)+"px"}});
 document.addEventListener("keydown",e=>{if(e.target.id==="cin"&&e.key==="Enter"&&!e.shiftKey&&!e.isComposing){e.preventDefault();sendChat(e.target.value)}});
