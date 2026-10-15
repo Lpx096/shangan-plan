@@ -368,6 +368,42 @@ document.addEventListener("click",ev=>{const t=ev.target.closest("[data-step],#c
  if(t.dataset.logdel){if(!confirm("删除这条打卡记录？"))return;const e=S.log.find(x=>x.id===t.dataset.logdel);(e.days||[]).filter(d=>!LR[d]).forEach(d=>{if(S.done[d]===e.date)delete S.done[d]});S.log=S.log.filter(x=>x!==e);recomputeDone();save();closeModal();render();toast("已删除")}});
 ensureLog();
 
+/* ================= GitHub 同步 ================= */
+// 文件主题 → 尚硅谷 Python 课节（按计划日课节范围+主题顺序估算；越具体的关键词越靠前）
+const TOPIC_LESSON=[["script",8],["hello",8],["第一个",8],["字面量",9],["变量",10],["标识符",12],["常量",13],["注释",15],["字符编码",16],["数据类型转换",22],["类型转换",22],["数据类型",17],["整型",18],["浮点",18],["四种定义",19],["字符串定义",19],["格式化",20],["精度",21],["转义",21],
+ ["复合赋值",24],["赋值运算",24],["算术运算",23],["比较运算",25],["布尔",26],["逻辑运算",27],["进制",29],["输入",30],["input",30],
+ ["嵌套分支",34],["单分支",31],["双分支",32],["多分支",33],["多分枝",33],["if",31],["while循环案例",36],["while与for",39],["while",35],["for循环案例",38],["嵌套循环",40],["九九",41],["9*9",41],["乘法表",41],["for",37],["continue",42],["break",42],["综合案例",43],
+ ["函数嵌套",55],["嵌套调用",55],["递归",57],["函数综合",59],["作用域",54],["全局",54],["none",53],["返回值",52],["可变参数",51],["不定长",51],["默认参数",50],["缺省",50],["关键字参数",49],["位置参数",48],["参数",46],["函数",44]];
+function topicOf(path){const f=path.split("/").pop().replace(/\.py$/i,"");return f.replace(/^[\d_\-\s.]+/,"").replace(/_副本$/,"")}
+function lessonOf(path){const t=topicOf(path).toLowerCase();for(const [k,v] of TOPIC_LESSON)if(t.includes(k.toLowerCase()))return v;return null}
+const ghDate=iso=>{const d=new Date(iso);return ds(d)};
+async function ghFetch(u){const r=await fetch(u,{headers:{"Accept":"application/vnd.github+json"}});if(r.status===403||r.status===429)throw new Error("GitHub API 频率限制（每小时60次），稍后再试");if(!r.ok)throw new Error("GitHub "+r.status+"："+u.split("/repos/")[1]);return r.json()}
+async function ghBuild(repo){const base="https://api.github.com/repos/"+repo;const list=await ghFetch(base+"/commits?per_page=100");const cs=list.slice().reverse();
+ const by={};for(const c of cs){const d=await ghFetch(base+"/commits/"+c.sha);const date=ghDate(d.commit.author.date);for(const f of d.files||[]){if(f.status!=="added"||!/\.py$/i.test(f.filename))continue;const L=lessonOf(f.filename);(by[date]=by[date]||[]).push({t:topicOf(f.filename),L})}}
+ const recs=[];let run=0;Object.keys(by).sort().forEach(date=>{const items=by[date],ls=items.map(x=>x.L).filter(Boolean);const mx=ls.length?Math.max(...ls):0;
+  if(mx>run){recs.push({date,from:run+1,to:mx,topics:items.map(x=>x.t),unk:items.filter(x=>!x.L).map(x=>x.t)});run=mx}else if(items.length)recs.push({date,from:null,to:null,topics:items.map(x=>x.t),unk:items.filter(x=>!x.L).map(x=>x.t),review:1})});
+ return recs}
+let ghPending=null;
+function ghPreview(recs,repo){const willDel=(S.log||[]).filter(e=>/迁移/.test(e.note||"")||e.src==="github");const days=new Set();const L=Math.max(maxLesson(),...recs.map(r=>r.to||0));for(const k in LR)if(LR[k][1]<=L)days.add(+k);
+ $("#sheet").innerHTML=`<div class="grab"></div><div style="display:flex;align-items:center;margin-bottom:8px"><span class="sm t2">从 GitHub 同步 · ${esc(repo)}</span><button class="ib" style="margin-left:auto" data-close aria-label="关闭">${I("x")}</button></div>
+ <div class="tt" style="margin:0 0 4px">学到第 ${L} 节 · 完成第 1–${Math.max(0,...days)} 天</div><div class="xs t2" style="margin-bottom:12px">按提交日期生成 ${recs.length} 条记录（课节由文件主题估算，可在「进度」里逐条修改）</div>
+ <div class="card p0" style="box-shadow:none;border:1px solid var(--line)">${recs.map(r=>`<div class="row" style="align-items:flex-start"><div style="width:52px;flex:none" class="sm"><b>${r.date.slice(5).replace("-","/")}</b></div><div style="flex:1;min-width:0"><div class="sm" style="font-weight:600">${r.to?`第 ${r.from}–${r.to} 节`:"复习/无新课节"}</div><div class="xs t2">${esc(r.topics.join("、"))}</div>${r.unk.length?`<div class="xs" style="color:var(--wn)">未识别：${esc(r.unk.join("、"))}</div>`:""}</div></div>`).join("")}</div>
+ <div class="xs t2" style="margin:12px 0">合并规则：不删除你手动记的记录；同一天已有手动记录则合并课节范围；${willDel.length?`将替换 ${willDel.length} 条自动迁移/旧同步记录。`:""}</div>
+ <button class="btn pri" id="ghapply">${I("check","s")}确认合并</button>`;$("#modal").classList.add("on")}
+function ghApply(){const recs=ghPending;if(!recs)return;S.log=(S.log||[]).filter(e=>!(/迁移/.test(e.note||"")||e.src==="github"));
+ recs.forEach((r,i)=>{const note="GitHub 同步："+r.topics.join("、");const ex=S.log.find(e=>e.date===r.date);
+  if(ex){if(r.to){ex.from=ex.from?Math.min(ex.from,r.from):r.from;ex.to=Math.max(+ex.to||0,r.to)}if(!(ex.note||"").includes(note))ex.note=(ex.note?ex.note+"；":"")+note}
+  else S.log.push({id:"g"+Date.now()+i,date:r.date,from:r.from,to:r.to,text:"",note,days:[],src:"github"})});
+ recomputeDone();S.log.forEach(e=>{const ds2=Object.keys(LR).map(Number).filter(k=>S.done[k]===e.date);e.days=[...new Set([...(e.days||[]).filter(d=>!LR[d]),...ds2])].sort((a,b)=>a-b)});
+ S.ghRepo=S.ghRepo||"Lpx096/python-learning";S.ghSynced=new Date().toISOString();save();ghPending=null;closeModal();render();celebrate("同步完成","已学到第 "+maxLesson()+" 节 · 完成 "+doneN()+" 天")}
+function ghCard(){return `<div class="card"><div class="ch">从 GitHub 同步进度</div><div class="fld"><label>学习仓库</label><input class="inp" id="ghrepo" value="${esc(S.ghRepo||"Lpx096/python-learning")}" placeholder="用户名/仓库名"></div>
+ <button class="btn pri" id="ghsync">${I("git","s")}读取提交并预览</button><div class="xs t3" style="margin-top:12px">读取公开仓库的提交记录，按文件主题（如「09_while与for区别.py」）推算尚硅谷课节，先预览再合并。${S.ghSynced?"上次同步："+S.ghSynced.slice(0,16).replace("T"," "):""}</div><div id="ghmsg" class="sm" style="margin-top:8px"></div></div>`}
+document.addEventListener("click",ev=>{const t=ev.target.closest("#ghsync,#ghapply");if(!t)return;
+ if(t.id==="ghapply"){ghApply();return}
+ const repo=($("#ghrepo").value||"").trim().replace(/^https?:\/\/github\.com\//,"").replace(/\.git$/,"").replace(/\/$/,"");if(!/^[\w.-]+\/[\w.-]+$/.test(repo)){toast("仓库格式：用户名/仓库名");return}
+ S.ghRepo=repo;save();const m=$("#ghmsg");m.innerHTML='<span class="t2">读取中…</span>';t.disabled=true;
+ ghBuild(repo).then(recs=>{t.disabled=false;m.innerHTML="";if(!recs.length){m.innerHTML='<span class="t2">没有找到可识别的 .py 提交</span>';return}ghPending=recs;ghPreview(recs,repo)}).catch(e=>{t.disabled=false;m.innerHTML=`<span style="color:var(--dg)">✗ ${esc(e.message)}</span>`})});
+
 /* ---------- ui ---------- */
 const $=s=>document.querySelector(s);
 const I=(n,c="")=>`<svg class="i ${c}"><use href="#i-${n}"/></svg>`;
@@ -458,7 +494,7 @@ PG.rules=()=>`<div class="ph"><div class="cap">每次重大选择前重读</div>
 PG.data=()=>`<div class="ph"><div class="cap">所有记录只保存在本机浏览器</div><h1>数据</h1></div>
  <div class="g2"><div class="card"><div class="ch">备份</div><button class="btn pri" id="ex">${I("down","s")}导出 JSON 备份</button><button class="btn" id="cp">${I("copy","s")}复制到剪贴板</button><div class="xs t3" style="margin-top:12px">包含计划日、习惯、时间线、笔记与设置</div></div>
  <div class="card"><div class="ch">恢复</div><label class="btn" style="cursor:pointer">${I("up","s")}选择备份文件<input type="file" id="fi" accept=".json,application/json" hidden></label><textarea id="ta" style="margin-top:8px;min-height:72px" placeholder="或粘贴 JSON"></textarea><button class="btn" id="im" style="margin-top:8px">导入粘贴内容</button></div>
- <div class="card"><div class="ch">安装到主屏幕</div><button class="btn pri" id="inst">${I("phone","s")}安装 App</button><div class="xs t2" style="margin-top:12px;line-height:1.8">iPhone：Safari 分享 →「添加到主屏幕」<br>安卓 / 电脑：Chrome、Edge 地址栏安装图标 · 安装后可离线使用</div></div>
+ ${ghCard()}<div class="card"><div class="ch">安装到主屏幕</div><button class="btn pri" id="inst">${I("phone","s")}安装 App</button><div class="xs t2" style="margin-top:12px;line-height:1.8">iPhone：Safari 分享 →「添加到主屏幕」<br>安卓 / 电脑：Chrome、Edge 地址栏安装图标 · 安装后可离线使用</div></div>
  <div class="card"><div class="ch">其它</div><button class="btn" id="hreset">${S.healthOk?"重新显示就医提醒":"标记已就医"}</button><button class="btn dg" id="rs">重置全部数据</button><div class="xs t3" style="margin-top:12px">已完成 ${doneN()} 天 · 笔记 ${Object.keys(S.notes).filter(k=>S.notes[k]).length} 篇 · v3</div></div></div>`;
 /* ================= AI ================= */
 const PROV={deepseek:{n:"DeepSeek",url:"https://api.deepseek.com/chat/completions",models:["deepseek-chat"]},kimi:{n:"Kimi / Moonshot",url:"https://api.moonshot.cn/v1/chat/completions",models:["kimi-k2.6","kimi-k2.7-code"]},custom:{n:"自定义（OpenAI 兼容）",url:"",models:[]}};
